@@ -4,7 +4,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace University.DataLayer
 {
-    internal class UniversityContextFactory : IDesignTimeDbContextFactory<UniversityContext>
+    public class UniversityContextFactory : IDesignTimeDbContextFactory<UniversityContext>
     {
         public UniversityContext CreateDbContext(string[] args)
         {

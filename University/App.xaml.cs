@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System.Windows;
 using University.DataLayer;
+using University.Domain.ViewModels;
 
 namespace University
 {
@@ -26,7 +27,14 @@ namespace University
                 options.UseSqlServer(connectionString: config["DbConnectionString"]);
             });
 
+            services.AddTransient<MainViewModel>();
+
+            services.AddTransient<MainWindow>();
+
             ServiceProvider = services.BuildServiceProvider();
+
+            var mainWindow = ServiceProvider.GetRequiredService<MainWindow>();
+            mainWindow.Show();
 
             base.OnStartup(e);
         }

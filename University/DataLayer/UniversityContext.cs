@@ -3,7 +3,7 @@ using University.DataLayer.Models;
 
 namespace University.DataLayer
 {
-    internal class UniversityContext : DbContext
+    public class UniversityContext : DbContext
     {
         public DbSet<Course> Courses { get; set; }
         public DbSet<Student> Students { get; set; }

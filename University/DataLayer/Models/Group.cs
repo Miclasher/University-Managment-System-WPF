@@ -1,8 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.Collections.ObjectModel;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace University.DataLayer.Models
 {
-    internal class Group
+    public class Group
     {
         [Column("GROUP_ID")]
         public Guid Id { get; set; }
@@ -14,6 +15,6 @@ namespace University.DataLayer.Models
         [Column("TEACHER_ID")]
         public Guid TeacherId { get; set; }
         public Teacher Teacher { get; set; } = null!;
-        public List<Student> Students { get; set; } = new List<Student>();
+        public ObservableCollection<Student> Students { get; set; } = new ObservableCollection<Student>();
     }
 }

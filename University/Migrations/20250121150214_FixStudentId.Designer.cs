@@ -12,8 +12,8 @@ using University.DataLayer;
 namespace University.Migrations
 {
     [DbContext(typeof(UniversityContext))]
-    [Migration("20250121104923_Initial")]
-    partial class Initial
+    [Migration("20250121150214_FixStudentId")]
+    partial class FixStudentId
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -78,12 +78,10 @@ namespace University.Migrations
 
             modelBuilder.Entity("University.DataLayer.Models.Student", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("STUDENT_ID");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("FirstName")
                         .IsRequired()

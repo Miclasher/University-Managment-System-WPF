@@ -7,6 +7,36 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
 
+        <!-- Course List -->
+        <ListBox ItemsSource="{Binding Courses}"
+                 SelectedItem="{Binding SelectedCourse}"
+                 DisplayMemberPath="Name"
+                 Grid.Column="0" />
+
+        <!-- Group List -->
+        <ListBox ItemsSource="{Binding Groups}"
+                 SelectedItem="{Binding SelectedGroup}"
+                 DisplayMemberPath="Name"
+                 Grid.Column="1" />
+
+        <!-- Student List -->
+        <ListBox ItemsSource="{Binding Students}"
+         Grid.Column="2">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding FirstName}" />
+                        <TextBlock Text=" " />
+                        <TextBlock Text="{Binding LastName}" FontStyle="Italic" />
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
     </Grid>
 </Window>
