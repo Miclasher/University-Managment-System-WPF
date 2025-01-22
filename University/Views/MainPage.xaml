@@ -25,6 +25,7 @@
 
         <!-- Course List -->
         <ListBox Grid.Row="1" 
+                 FontSize="16"
                  ItemsSource="{Binding Courses}"
                  SelectedItem="{Binding SelectedCourse}"
                  DisplayMemberPath="Name"
@@ -32,6 +33,7 @@
 
         <!-- Group List -->
         <ListBox Grid.Row="1"
+                 FontSize="16"
                  ItemsSource="{Binding Groups}"
                  SelectedItem="{Binding SelectedGroup}"
                  DisplayMemberPath="Name"
@@ -39,6 +41,7 @@
 
         <!-- Student List -->
         <ListBox Grid.Row="1"
+                 FontSize="16"
                  ItemsSource="{Binding Students}"
          Grid.Column="2">
             <ListBox.ItemTemplate>

@@ -9,7 +9,6 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
@@ -27,8 +26,6 @@
             <Button Content="Teacher List" Command="{Binding NavigateToTeacherListCommand}" HorizontalAlignment="Stretch" 
                 VerticalAlignment="Stretch" Margin="5" FontSize="16" />
         </UniformGrid>
-
-        <Line X1="0" Y1="0" X2="1" Y2="0" Stroke="Black" StrokeThickness="2" Grid.Row="1" Grid.ColumnSpan="3" Stretch="Fill" />
 
         <!-- Frame for Navigation -->
         <Frame x:Name="MainFrame" Grid.Row="1" NavigationUIVisibility="Hidden"/>

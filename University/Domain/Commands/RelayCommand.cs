@@ -4,7 +4,11 @@ namespace University.Domain.Commands
 {
     public class RelayCommand : ICommand
     {
-        public event EventHandler? CanExecuteChanged;
+        public event EventHandler? CanExecuteChanged
+        {
+            add { CommandManager.RequerySuggested += value; }
+            remove { CommandManager.RequerySuggested -= value; }
+        }
 
         private Action<object?> ExecuteAction { get; }
         private Predicate<object?> CanExecutePredicate { get; }

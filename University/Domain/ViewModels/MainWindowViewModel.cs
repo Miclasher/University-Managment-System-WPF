@@ -46,6 +46,5 @@ namespace University.Domain.ViewModels
             var mainWindow = App.Current.MainWindow as MainWindow;
             mainWindow!.MainFrame.Navigate(new GroupsPage(new GroupsViewModel(_context)));
         }
-
     }
 }

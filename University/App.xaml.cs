@@ -22,10 +22,7 @@ namespace University
 
             var services = new ServiceCollection();
 
-            services.AddDbContext<UniversityContext>(options =>
-            {
-                options.UseSqlServer(connectionString: config["DbConnectionString"]);
-            });
+            services.AddDbContext<UniversityContext>(options => options.UseSqlServer(connectionString: config["DbConnectionString"]));
 
             services.AddTransient<MainWindowViewModel>();
             services.AddTransient<MainViewModel>();
