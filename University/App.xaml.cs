@@ -27,6 +27,7 @@ namespace University
                 options.UseSqlServer(connectionString: config["DbConnectionString"]);
             });
 
+            services.AddTransient<MainWindowViewModel>();
             services.AddTransient<MainViewModel>();
 
             services.AddTransient<MainWindow>();

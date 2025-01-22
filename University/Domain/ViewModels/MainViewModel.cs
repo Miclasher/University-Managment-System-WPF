@@ -43,9 +43,6 @@ namespace University.Domain.ViewModels
                 }
             }
         }
-        public ICommand NavigateToGroupListCommand { get; }
-        public ICommand NavigateToStudentListCommand { get; }
-        public ICommand NavigateToTeacherListCommand { get; }
 
         public MainViewModel(UniversityContext context)
         {
@@ -55,25 +52,6 @@ namespace University.Domain.ViewModels
                 .Include(c => c.Groups)
                 .ThenInclude(g => g.Students)
                 .ToList());
-
-            NavigateToGroupListCommand = new RelayCommand(_ => NavigateToGroupList(), _ => true);
-            NavigateToStudentListCommand = new RelayCommand(_ => NavigateToStudentList(), _ => true);
-            NavigateToTeacherListCommand = new RelayCommand(_ => NavigateToTeacherList(), _ => true);
-        }
-
-        private void NavigateToTeacherList()
-        {
-            throw new NotImplementedException();
-        }
-
-        private void NavigateToStudentList()
-        {
-            throw new NotImplementedException();
-        }
-
-        private void NavigateToGroupList()
-        {
-            throw new NotImplementedException();
         }
     }
 }

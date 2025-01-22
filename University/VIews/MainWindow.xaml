@@ -10,56 +10,27 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
         <!-- Navigation Buttons -->
-        <Button Content="Group List" Command="{Binding NavigateToGroupListCommand}" Grid.Column="0" HorizontalAlignment="Stretch" 
+        <UniformGrid Grid.Row="0" Grid.ColumnSpan="3" Rows="1" Columns="4" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            <Button Content="Main page" Command="{Binding NavigateToMainCommand}" HorizontalAlignment="Stretch" 
                 VerticalAlignment="Stretch" Margin="5" FontSize="16" />
-        <Button Content="Student List" Command="{Binding NavigateToStudentListCommand}" Grid.Column="1" HorizontalAlignment="Stretch" 
+            <Button Content="Group List" Command="{Binding NavigateToGroupListCommand}" HorizontalAlignment="Stretch" 
                 VerticalAlignment="Stretch" Margin="5" FontSize="16" />
-        <Button Content="Teacher List" Command="{Binding NavigateToTeacherListCommand}" Grid.Column="2" HorizontalAlignment="Stretch" 
+            <Button Content="Student List" Command="{Binding NavigateToStudentListCommand}" HorizontalAlignment="Stretch" 
                 VerticalAlignment="Stretch" Margin="5" FontSize="16" />
+            <Button Content="Teacher List" Command="{Binding NavigateToTeacherListCommand}" HorizontalAlignment="Stretch" 
+                VerticalAlignment="Stretch" Margin="5" FontSize="16" />
+        </UniformGrid>
 
         <Line X1="0" Y1="0" X2="1" Y2="0" Stroke="Black" StrokeThickness="2" Grid.Row="1" Grid.ColumnSpan="3" Stretch="Fill" />
 
-        <TextBlock Text="Courses" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Center" FontSize="16"/>
-        <TextBlock Text="Groups" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Center" FontSize="16"/>
-        <TextBlock Text="Students" Grid.Row="2" Grid.Column="2" HorizontalAlignment="Center" FontSize="16"/>
-
-        <!-- Course List -->
-        <ListBox Grid.Row="3" 
-                 ItemsSource="{Binding Courses}"
-                 SelectedItem="{Binding SelectedCourse}"
-                 DisplayMemberPath="Name"
-                 Grid.Column="0" />
-
-        <!-- Group List -->
-        <ListBox Grid.Row="3"
-                 ItemsSource="{Binding Groups}"
-                 SelectedItem="{Binding SelectedGroup}"
-                 DisplayMemberPath="Name"
-                 Grid.Column="1" />
-
-        <!-- Student List -->
-        <ListBox Grid.Row="3"
-                 ItemsSource="{Binding Students}"
-         Grid.Column="2">
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="{Binding FirstName}" />
-                        <TextBlock Text=" " />
-                        <TextBlock Text="{Binding LastName}" FontStyle="Italic" />
-                    </StackPanel>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
+        <!-- Frame for Navigation -->
+        <Frame x:Name="MainFrame" Grid.Row="1" NavigationUIVisibility="Hidden"/>
     </Grid>
 </Window>
