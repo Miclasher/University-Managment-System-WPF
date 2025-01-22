@@ -1,8 +1,10 @@
-﻿using System.Collections.ObjectModel;
+﻿using Microsoft.EntityFrameworkCore;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Windows.Input;
 using University.DataLayer;
 using University.DataLayer.Models;
-using Microsoft.EntityFrameworkCore;
+using University.Domain.Commands;
 
 namespace University.Domain.ViewModels
 {
@@ -11,8 +13,9 @@ namespace University.Domain.ViewModels
         private readonly UniversityContext _context;
         private Course _selectedCourse = null!;
         private Group _selectedGroup = null!;
-
-        public ObservableCollection<Course> Courses { get; set; }
+        public ObservableCollection<Course> Courses { get; }
+        public ObservableCollection<Group> Groups => SelectedCourse?.Groups!;
+        public ObservableCollection<Student> Students => SelectedGroup?.Students!;
         public Course SelectedCourse
         {
             get => _selectedCourse;
@@ -40,14 +43,37 @@ namespace University.Domain.ViewModels
                 }
             }
         }
+        public ICommand NavigateToGroupListCommand { get; }
+        public ICommand NavigateToStudentListCommand { get; }
+        public ICommand NavigateToTeacherListCommand { get; }
 
-        public ObservableCollection<Group> Groups => SelectedCourse?.Groups!;
-        public ObservableCollection<Student> Students => SelectedGroup?.Students!;
         public MainViewModel(UniversityContext context)
         {
             _context = context;
 
-            Courses = new ObservableCollection<Course>(_context.Courses.Include(c => c.Groups).ThenInclude(g => g.Students).ToList());
+            Courses = new ObservableCollection<Course>(_context.Courses
+                .Include(c => c.Groups)
+                .ThenInclude(g => g.Students)
+                .ToList());
+
+            NavigateToGroupListCommand = new RelayCommand(_ => NavigateToGroupList(), _ => true);
+            NavigateToStudentListCommand = new RelayCommand(_ => NavigateToStudentList(), _ => true);
+            NavigateToTeacherListCommand = new RelayCommand(_ => NavigateToTeacherList(), _ => true);
+        }
+
+        private void NavigateToTeacherList()
+        {
+            throw new NotImplementedException();
+        }
+
+        private void NavigateToStudentList()
+        {
+            throw new NotImplementedException();
+        }
+
+        private void NavigateToGroupList()
+        {
+            throw new NotImplementedException();
         }
     }
 }

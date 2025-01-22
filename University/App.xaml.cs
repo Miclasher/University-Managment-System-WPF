@@ -36,7 +36,15 @@ namespace University
             var mainWindow = ServiceProvider.GetRequiredService<MainWindow>();
             mainWindow.Show();
 
+            this.DispatcherUnhandledException += HandleException;
+
             base.OnStartup(e);
+        }
+
+        private void HandleException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
+        {
+            MessageBox.Show(e.Exception.Message, "Exception occured", MessageBoxButton.OK, MessageBoxImage.Error);
+            e.Handled = true;
         }
     }
 }

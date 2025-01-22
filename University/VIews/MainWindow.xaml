@@ -1,0 +1,65 @@
+﻿<Window x:Class="University.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:University"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <!-- Navigation Buttons -->
+        <Button Content="Group List" Command="{Binding NavigateToGroupListCommand}" Grid.Column="0" HorizontalAlignment="Stretch" 
+                VerticalAlignment="Stretch" Margin="5" FontSize="16" />
+        <Button Content="Student List" Command="{Binding NavigateToStudentListCommand}" Grid.Column="1" HorizontalAlignment="Stretch" 
+                VerticalAlignment="Stretch" Margin="5" FontSize="16" />
+        <Button Content="Teacher List" Command="{Binding NavigateToTeacherListCommand}" Grid.Column="2" HorizontalAlignment="Stretch" 
+                VerticalAlignment="Stretch" Margin="5" FontSize="16" />
+
+        <Line X1="0" Y1="0" X2="1" Y2="0" Stroke="Black" StrokeThickness="2" Grid.Row="1" Grid.ColumnSpan="3" Stretch="Fill" />
+
+        <TextBlock Text="Courses" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Center" FontSize="16"/>
+        <TextBlock Text="Groups" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Center" FontSize="16"/>
+        <TextBlock Text="Students" Grid.Row="2" Grid.Column="2" HorizontalAlignment="Center" FontSize="16"/>
+
+        <!-- Course List -->
+        <ListBox Grid.Row="3" 
+                 ItemsSource="{Binding Courses}"
+                 SelectedItem="{Binding SelectedCourse}"
+                 DisplayMemberPath="Name"
+                 Grid.Column="0" />
+
+        <!-- Group List -->
+        <ListBox Grid.Row="3"
+                 ItemsSource="{Binding Groups}"
+                 SelectedItem="{Binding SelectedGroup}"
+                 DisplayMemberPath="Name"
+                 Grid.Column="1" />
+
+        <!-- Student List -->
+        <ListBox Grid.Row="3"
+                 ItemsSource="{Binding Students}"
+         Grid.Column="2">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding FirstName}" />
+                        <TextBlock Text=" " />
+                        <TextBlock Text="{Binding LastName}" FontStyle="Italic" />
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+    </Grid>
+</Window>
