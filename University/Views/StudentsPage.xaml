@@ -9,6 +9,48 @@
       Title="StudentsPage">
 
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="2*"/>
+        </Grid.ColumnDefinitions>
+
+        <!--Students list-->
+        <ListBox Grid.Row="0" Grid.Column="0" ItemsSource="{Binding Students}" SelectedItem="{Binding SelectedStudent}" FontSize="16">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding FirstName}" />
+                        <TextBlock Text=" " />
+                        <TextBlock Text="{Binding LastName}" />
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+
+        <!--Student details-->
+        <StackPanel Grid.Column="1" Grid.Row="0" Orientation= "Vertical" Margin="10">
+            <TextBlock Text="Student details" FontSize="24" FontStretch="Expanded"/>
+            
+            <TextBlock Text="Name: " FontSize="16"/>
+            <TextBox Text="{Binding SelectedStudent.FirstName}" FontSize="16" Margin="15"/>
+            
+            <TextBlock Text="Surname: " FontSize="16"/>
+            <TextBox Text="{Binding SelectedStudent.LastName}" FontSize="16" Margin="15"/>
+            
+            <TextBlock Text="Group: " FontSize="16"/>
+            <ComboBox ItemsSource="{Binding Groups}" SelectedItem="{Binding SelectedStudent.Group}" DisplayMemberPath="Name" FontSize="16" Margin="15"/>
+
+            <Button FontSize="16" Grid.Row="0" Grid.Column="1" Content="Delete" Command="{Binding DeleteStudentCommand}" Margin="15"/>
+        </StackPanel>
+
+        <!--Buttons-->
+        <UniformGrid Grid.Row="1" Grid.ColumnSpan="2">
+            <Button FontSize="16" Content="Add" Command="{Binding AddStudentCommand}"/>
+            <Button FontSize="16" Content="Save" Command="{Binding SaveStudentCommand}"/>
+        </UniformGrid>
     </Grid>
 </Page>
