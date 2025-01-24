@@ -1,7 +1,7 @@
-﻿using University.Domain.Commands;
-using University.Views;
-using System.Windows.Input;
+﻿using System.Windows.Input;
 using University.DataLayer;
+using University.Domain.Commands;
+using University.Views;
 
 namespace University.Domain.ViewModels
 {

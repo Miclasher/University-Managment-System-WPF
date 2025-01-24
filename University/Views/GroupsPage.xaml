@@ -30,7 +30,10 @@
             
             <TextBlock Text="Teacher: " FontSize="16"/>
             <ComboBox ItemsSource="{Binding Teachers}" SelectedItem ="{Binding SelectedGroup.Teacher}" DisplayMemberPath="FirstName" FontSize="16" Margin="15"/>
-            
+
+            <TextBlock Text="Course: " FontSize="16"/>
+            <ComboBox ItemsSource="{Binding Courses}" SelectedItem ="{Binding SelectedGroup.Course}" DisplayMemberPath="Name" FontSize="16" Margin="15"/>
+
             <Grid  Margin="20">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>

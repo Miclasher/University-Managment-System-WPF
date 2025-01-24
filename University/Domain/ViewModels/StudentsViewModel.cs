@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Microsoft.EntityFrameworkCore;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Windows.Input;
 using University.DataLayer;
 using University.DataLayer.Models;
-using Microsoft.EntityFrameworkCore;
-using System.Windows.Input;
 using University.Domain.Commands;
 
 namespace University.Domain.ViewModels
@@ -49,17 +44,50 @@ namespace University.Domain.ViewModels
 
         private void SaveStudent()
         {
-            throw new NotImplementedException();
+            ArgumentNullException.ThrowIfNull(SelectedStudent);
+
+            if (SelectedStudent.Id == Guid.Empty)
+            {
+                _context.Students.Add(SelectedStudent);
+                _context.SaveChanges();
+            }
+            else
+            {
+                _context.Students.Update(SelectedStudent);
+            }
         }
 
         private void DeleteStudent()
         {
-            throw new NotImplementedException();
+            ArgumentNullException.ThrowIfNull(SelectedStudent);
+
+            var result = System.Windows.MessageBox.Show("Are you sure you want to delete the selected student?", "Delete Student", System.Windows.MessageBoxButton.YesNo);
+
+            if (result == System.Windows.MessageBoxResult.Yes)
+            {
+                if (SelectedStudent.Id == Guid.Empty)
+                {
+                    Students.Remove(SelectedStudent);
+                }
+                else
+                {
+                    _context.Students.Remove(SelectedStudent);
+                    _context.SaveChanges();
+                    Students.Remove(SelectedStudent);
+                }
+            }
         }
 
         private void AddStudent()
         {
-            throw new NotImplementedException();
+            var NewStudent = new Student()
+            {
+                FirstName = "New",
+                LastName = "Student",
+                Group = Groups.FirstOrDefault()!
+            };
+            Students.Add(NewStudent);
+            SelectedStudent = NewStudent;
         }
     }
 }

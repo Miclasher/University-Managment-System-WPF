@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using University.DataLayer;
 using University.DataLayer.Models;
@@ -45,17 +40,49 @@ namespace University.Domain.ViewModels
 
         private void SaveTeacher()
         {
-            throw new NotImplementedException();
+            ArgumentNullException.ThrowIfNull(SelectedTeacher);
+
+            if (SelectedTeacher.Id == Guid.Empty)
+            {
+                _context.Teachers.Add(SelectedTeacher);
+                _context.SaveChanges();
+            }
+            else
+            {
+                _context.Teachers.Update(SelectedTeacher);
+            }
         }
 
         private void DeleteTeacher()
         {
-            throw new NotImplementedException();
+            ArgumentNullException.ThrowIfNull(SelectedTeacher);
+
+            var result = System.Windows.MessageBox.Show("Are you sure you want to delete the selected teacher?", "Delete Teacher", System.Windows.MessageBoxButton.YesNo);
+
+            if (result == System.Windows.MessageBoxResult.Yes)
+            {
+                if (SelectedTeacher.Id == Guid.Empty)
+                {
+                    Teachers.Remove(SelectedTeacher);
+                }
+                else
+                {
+                    _context.Teachers.Remove(SelectedTeacher);
+                    _context.SaveChanges();
+                    Teachers.Remove(SelectedTeacher);
+                }
+            }
         }
 
         private void AddTeacher()
         {
-            throw new NotImplementedException();
+            var NewTeacher = new Teacher()
+            {
+                FirstName = "New",
+                LastName = "Teacher",
+            };
+            Teachers.Add(NewTeacher);
+            SelectedTeacher = NewTeacher;
         }
     }
 }

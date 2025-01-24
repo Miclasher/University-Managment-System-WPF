@@ -7,7 +7,7 @@
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="StudentsPage">
-
+    
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition/>
@@ -22,10 +22,13 @@
         <ListBox Grid.Row="0" Grid.Column="0" ItemsSource="{Binding Students}" SelectedItem="{Binding SelectedStudent}" FontSize="16">
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="{Binding FirstName}" />
-                        <TextBlock Text=" " />
-                        <TextBlock Text="{Binding LastName}" />
+                    <StackPanel Orientation="Vertical">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{Binding FirstName}" />
+                            <TextBlock Text=" " />
+                            <TextBlock Text="{Binding LastName}" />
+                        </StackPanel>
+                        <TextBlock Text="{Binding Group.Name, TargetNullValue='No group'}" Foreground="Gray" FontSize="12"/>
                     </StackPanel>
                 </DataTemplate>
             </ListBox.ItemTemplate>

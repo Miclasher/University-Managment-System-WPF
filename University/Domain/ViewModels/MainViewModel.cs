@@ -1,10 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Windows.Input;
 using University.DataLayer;
 using University.DataLayer.Models;
-using University.Domain.Commands;
 
 namespace University.Domain.ViewModels
 {
