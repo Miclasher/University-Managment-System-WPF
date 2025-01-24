@@ -1,10 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.IO;
 using System.Windows.Input;
 using University.DataLayer;
 using University.DataLayer.Models;
 using University.Domain.Commands;
+using University.Domain.Utilities;
 
 namespace University.Domain.ViewModels
 {
@@ -16,8 +18,9 @@ namespace University.Domain.ViewModels
         public ICommand ClearGroupCommand { get; }
         public ICommand DeleteGroupCommand { get; }
         public ICommand SaveGroupCommand { get; }
-        public ICommand ImportToGroupCommand { get; }
-        public ICommand ExportGroupCommand { get; }
+        public ICommand ImportStudentsCommand { get; }
+        public ICommand ExportStudentsCommand { get; }
+        public ICommand ExportGroupToPdfCommand { get; }
         public Group SelectedGroup
         {
             get => _selectedGroup;
@@ -45,18 +48,90 @@ namespace University.Domain.ViewModels
             SaveGroupCommand = new RelayCommand(_ => SaveGroup(), _ => true);
             ClearGroupCommand = new RelayCommand(_ => ClearGroup(), _ => true);
             DeleteGroupCommand = new RelayCommand(_ => DeleteGroup(), _ => true);
-            ImportToGroupCommand = new RelayCommand(_ => ImportToGroup(), _ => true);
-            ExportGroupCommand = new RelayCommand(_ => ExportGroup(), _ => true);
+            ImportStudentsCommand = new RelayCommand(_ => ImportStudents(), _ => true);
+            ExportStudentsCommand = new RelayCommand(_ => ExportStudents(), _ => true);
+            ExportGroupToPdfCommand = new RelayCommand(_ => ExportGroupToPdf(), _ => true);
         }
 
-        private void ImportToGroup()
+        private void ExportGroupToPdf()
         {
-            throw new NotImplementedException();
+            ArgumentNullException.ThrowIfNull(SelectedGroup);
+
+            if (SelectedGroup.Students.Count == 0)
+            {
+                throw new InvalidOperationException("Group has no students to export.");
+            }
+
+            var dialog = new Microsoft.Win32.SaveFileDialog();
+            dialog.FileName = SelectedGroup.Name;
+            dialog.DefaultExt = ".pdf";
+            dialog.Filter = "Document (.pdf)|*.pdf";
+
+            bool? result = dialog.ShowDialog();
+
+            if (result == true)
+            {
+                string filename = dialog.FileName;
+                using var fs = new FileStream(filename, FileMode.OpenOrCreate);
+
+                PdfExporter.ExportPdfGroup(fs, SelectedGroup);
+            }
         }
 
-        private void ExportGroup()
+        private void ImportStudents()
         {
-            throw new NotImplementedException();
+            ArgumentNullException.ThrowIfNull(SelectedGroup);
+
+            if (SelectedGroup.Students.Count > 0)
+            {
+                throw new InvalidOperationException("Group has students. Clear group to import students.");
+            }
+
+            var dialog = new Microsoft.Win32.OpenFileDialog();
+            dialog.FileName = SelectedGroup.Name;
+            dialog.DefaultExt = ".csv";
+            dialog.Filter = "Table (.csv)|*.csv";
+
+            bool? result = dialog.ShowDialog();
+
+            if (result == true)
+            {
+                string filename = dialog.FileName;
+                using var fs = new FileStream(filename, FileMode.Open);
+                var students = CsvHandler.ImportStudents(fs);
+
+                foreach (var student in students)
+                {
+                    SelectedGroup.Students.Add(student);
+                }
+
+                SaveGroup();
+            }
+        }
+
+        private void ExportStudents()
+        {
+            ArgumentNullException.ThrowIfNull(SelectedGroup);
+
+            if (SelectedGroup.Students.Count == 0)
+            {
+                throw new InvalidOperationException("Group has no students to export.");
+            }
+
+            var dialog = new Microsoft.Win32.SaveFileDialog();
+            dialog.FileName = SelectedGroup.Name;
+            dialog.DefaultExt = ".csv";
+            dialog.Filter = "Table (.csv)|*.csv";
+
+            bool? result = dialog.ShowDialog();
+
+            if (result == true)
+            {
+                string filename = dialog.FileName;
+                using var fs = new FileStream(filename, FileMode.OpenOrCreate);
+
+                CsvHandler.ExportStudents(fs, SelectedGroup);
+            }
         }
 
         private void DeleteGroup()
@@ -100,6 +175,7 @@ namespace University.Domain.ViewModels
             }
             _context.SaveChanges();
         }
+
         private void ClearGroup()
         {
             ArgumentNullException.ThrowIfNull(SelectedGroup);

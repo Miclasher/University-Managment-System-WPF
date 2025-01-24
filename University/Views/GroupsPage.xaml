@@ -5,7 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:University.Views"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
+      d:DesignHeight="550" d:DesignWidth="800"
       Title="GroupsPage">
 
     <Grid>
@@ -34,7 +34,7 @@
             <TextBlock Text="Course: " FontSize="16"/>
             <ComboBox ItemsSource="{Binding Courses}" SelectedItem ="{Binding SelectedGroup.Course}" DisplayMemberPath="Name" FontSize="16" Margin="15"/>
 
-            <Grid  Margin="20">
+            <Grid  Margin="10">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
@@ -42,11 +42,13 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
                 <Button FontSize="16" Grid.Row="0" Grid.Column="0" Content="Clear" Command="{Binding ClearGroupCommand}" Margin="10"/>
                 <Button FontSize="16" Grid.Row="0" Grid.Column="1" Content="Delete" Command="{Binding DeleteGroupCommand}" Margin="10"/>
-                <Button FontSize="16" Grid.Row="1" Grid.Column="0" Content="Import" Command="{Binding ImportGroupCommand}" Margin="10"/>
-                <Button FontSize="16" Grid.Row="1" Grid.Column="1" Content="Export" Command="{Binding ExportGroupCommand}" Margin="10"/>
+                <Button FontSize="16" Grid.Row="1" Grid.Column="0" Content="Import students" Command="{Binding ImportStudentsCommand}" Margin="10"/>
+                <Button FontSize="16" Grid.Row="1" Grid.Column="1" Content="Export students" Command="{Binding ExportStudentsCommand}" Margin="10"/>
+                <Button FontSize="16" Grid.ColumnSpan="2" Grid.Row="2" Content="Export to PDF" Command="{Binding ExportGroupToPdfCommand}" Margin="10"/>
             </Grid>
         </StackPanel>
 
