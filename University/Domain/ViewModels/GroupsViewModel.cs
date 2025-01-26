@@ -14,6 +14,7 @@ namespace University.Domain.ViewModels
     public class GroupsViewModel : BaseCrudViewModel, INotifyPropertyChanged
     {
         private readonly UniversityContext _context;
+        private readonly IMessageBoxService _messageBoxService;
         private Group _selectedGroup = null!;
         public ICommand AddGroupCommand { get; }
         public ICommand ClearGroupCommand { get; }
@@ -41,9 +42,10 @@ namespace University.Domain.ViewModels
         public ObservableCollection<Teacher> Teachers { get; }
         public ObservableCollection<Course> Courses { get; }
 
-        public GroupsViewModel(UniversityContext context)
+        public GroupsViewModel(UniversityContext context, IMessageBoxService messageBoxService)
         {
             _context = context;
+            _messageBoxService = messageBoxService;
 
             Groups = new ObservableCollection<Group>(_context.Groups.Include(e => e.Teacher).OrderBy(g => g.Name).ToList());
             Teachers = new ObservableCollection<Teacher>(_context.Teachers.OrderBy(e => e.FirstName).ToList());
@@ -57,7 +59,7 @@ namespace University.Domain.ViewModels
             ExportStudentsCommand = new RelayCommand(_ => ExportStudents(), _ => true);
             ExportGroupToPdfCommand = new RelayCommand(_ => ExportGroupToPdf(), _ => true);
             NameChangedCommand = new RelayCommand(NameChanged, _ => true);
-            TeacherChangedCommand = new RelayCommand(_ =>TeacherChanged(), _ => true);
+            TeacherChangedCommand = new RelayCommand(_ => TeacherChanged(), _ => true);
             CourseChangedCommand = new RelayCommand(_ => CourseChanged(), _ => true);
         }
 
@@ -167,7 +169,7 @@ namespace University.Domain.ViewModels
         {
             ArgumentNullException.ThrowIfNull(SelectedGroup);
 
-            var result = System.Windows.MessageBox.Show("Are you sure you want to delete the selected group?", "Delete Group", System.Windows.MessageBoxButton.YesNo);
+            var result = _messageBoxService.Show("Are you sure you want to delete the selected group?", "Delete Group", System.Windows.MessageBoxButton.YesNo);
             if (result == System.Windows.MessageBoxResult.Yes)
             {
                 if (SelectedGroup.Id == Guid.Empty)
@@ -185,7 +187,7 @@ namespace University.Domain.ViewModels
                 }
                 else
                 {
-                    System.Windows.MessageBox.Show("Group has students. Please clear the group first.", "Delete Group", System.Windows.MessageBoxButton.OK);
+                    _messageBoxService.Show("Group has students. Please clear the group first.", "Delete Group", System.Windows.MessageBoxButton.OK);
                 }
             }
 
@@ -213,7 +215,7 @@ namespace University.Domain.ViewModels
         {
             ArgumentNullException.ThrowIfNull(SelectedGroup);
 
-            var result = System.Windows.MessageBox.Show("Are you sure you want to clear the selected group? (All students will be deleted)", "Clear Group", System.Windows.MessageBoxButton.YesNo);
+            var result = _messageBoxService.Show("Are you sure you want to clear the selected group? (All students will be deleted)", "Clear Group", System.Windows.MessageBoxButton.YesNo);
             if (result == System.Windows.MessageBoxResult.Yes)
             {
                 _context.RemoveRange(SelectedGroup.Students);

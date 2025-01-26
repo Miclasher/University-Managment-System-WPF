@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System.Windows;
 using University.DataLayer;
+using University.Domain.Utilities;
 using University.Domain.ViewModels;
 
 namespace University
@@ -23,6 +24,8 @@ namespace University
             var services = new ServiceCollection();
 
             services.AddDbContext<UniversityContext>(options => options.UseSqlServer(connectionString: config["DbConnectionString"]));
+
+            services.AddScoped<IMessageBoxService, MessageBoxService>();
 
             services.AddTransient<MainWindowViewModel>();
             services.AddTransient<MainViewModel>();

@@ -5,12 +5,14 @@ using System.Windows.Input;
 using University.DataLayer;
 using University.DataLayer.Models;
 using University.Domain.Commands;
+using University.Domain.Utilities;
 
 namespace University.Domain.ViewModels
 {
     public class TeachersViewModel : BaseCrudViewModel, INotifyPropertyChanged
     {
         private readonly UniversityContext _context;
+        private readonly IMessageBoxService _messageBoxService;
         private Teacher _selectedTeacher = null!;
         public Teacher SelectedTeacher
         {
@@ -31,9 +33,10 @@ namespace University.Domain.ViewModels
         public ICommand FirstNameChangedCommand { get; }
         public ICommand LastNameChangedCommand { get; }
 
-        public TeachersViewModel(UniversityContext context)
+        public TeachersViewModel(UniversityContext context, IMessageBoxService messageBoxService)
         {
             _context = context;
+            _messageBoxService = messageBoxService;
 
             Teachers = new ObservableCollection<Teacher>(_context.Teachers.ToList());
 
@@ -83,7 +86,7 @@ namespace University.Domain.ViewModels
         {
             ArgumentNullException.ThrowIfNull(SelectedTeacher);
 
-            var result = System.Windows.MessageBox.Show("Are you sure you want to delete the selected teacher?", "Delete Teacher", System.Windows.MessageBoxButton.YesNo);
+            var result = _messageBoxService.Show("Are you sure you want to delete the selected teacher?", "Delete Teacher", System.Windows.MessageBoxButton.YesNo);
 
             if (result == System.Windows.MessageBoxResult.Yes)
             {

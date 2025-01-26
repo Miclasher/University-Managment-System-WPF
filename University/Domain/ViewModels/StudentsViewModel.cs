@@ -6,12 +6,14 @@ using System.Windows.Input;
 using University.DataLayer;
 using University.DataLayer.Models;
 using University.Domain.Commands;
+using University.Domain.Utilities;
 
 namespace University.Domain.ViewModels
 {
     public class StudentsViewModel : BaseCrudViewModel, INotifyPropertyChanged
     {
         private readonly UniversityContext _context;
+        private readonly IMessageBoxService _messageBoxService;
         private Student _selectedStudent = null!;
         public Student SelectedStudent
         {
@@ -34,15 +36,16 @@ namespace University.Domain.ViewModels
         public ICommand LastNameChangedCommand { get; }
         public ICommand GroupChangedCommand { get; }
 
-        public StudentsViewModel(UniversityContext context)
+        public StudentsViewModel(UniversityContext context, IMessageBoxService messageBoxService)
         {
             _context = context;
+            _messageBoxService = messageBoxService;
 
             Students = new ObservableCollection<Student>(_context.Students.Include(e => e.Group).ToList());
             Groups = new ObservableCollection<Group>(_context.Groups.ToList());
 
             AddStudentCommand = new RelayCommand(_ => AddStudent(), _ => true);
-            DeleteStudentCommand = new RelayCommand(_ => DeleteStudent(), _ => true);
+            DeleteStudentCommand = new RelayCommand(_ => ConfirmAndDeleteStudent(), _ => true);
             SaveStudentCommand = new RelayCommand(_ => SaveStudent(), _ => true);
             FirstNameChangedCommand = new RelayCommand(FirstNameChanged, _ => true);
             LastNameChangedCommand = new RelayCommand(LastNameChanged, _ => true);
@@ -89,11 +92,11 @@ namespace University.Domain.ViewModels
             IsSaved = true;
         }
 
-        private void DeleteStudent()
+        private void ConfirmAndDeleteStudent()
         {
             ArgumentNullException.ThrowIfNull(SelectedStudent);
 
-            var result = System.Windows.MessageBox.Show("Are you sure you want to delete the selected student?", "Delete Student", System.Windows.MessageBoxButton.YesNo);
+            var result = _messageBoxService.Show("Are you sure you want to delete the selected student?", "Delete Student", System.Windows.MessageBoxButton.YesNo);
 
             if (result == System.Windows.MessageBoxResult.Yes)
             {

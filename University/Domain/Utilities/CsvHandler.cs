@@ -32,7 +32,7 @@ namespace University.Domain.Utilities
             ArgumentNullException.ThrowIfNull(fs);
             ArgumentNullException.ThrowIfNull(group);
 
-            using var writer = new StreamWriter(fs);
+            using var writer = new StreamWriter(fs, leaveOpen: true);
             foreach (var student in group.Students)
             {
                 writer.WriteLine($"{student.FirstName},{student.LastName}");

@@ -2,6 +2,7 @@
 using System.Windows.Input;
 using University.DataLayer;
 using University.Domain.Commands;
+using University.Domain.Utilities;
 using University.Views;
 
 namespace University.Domain.ViewModels
@@ -18,6 +19,7 @@ namespace University.Domain.ViewModels
     public class MainWindowViewModel : BaseViewModel
     {
         private readonly UniversityContext _context;
+        private readonly IMessageBoxService _messageBoxService;
         private static MainWindow MainWindow => (MainWindow)App.Current.MainWindow;
 
         private PageType _currentPage;
@@ -40,9 +42,11 @@ namespace University.Domain.ViewModels
         public ICommand NavigateToTeacherListCommand { get; }
         public ICommand NavigateToCoursesListCommand { get; }
 
-        public MainWindowViewModel(UniversityContext context)
+        public MainWindowViewModel(UniversityContext context, IMessageBoxService messageBoxService)
         {
             _context = context;
+            _messageBoxService = messageBoxService;
+
             NavigateToMainCommand = new RelayCommand(_ => NavigateToMainPage(), _ => true);
             NavigateToGroupListCommand = new RelayCommand(_ => NavigateToGroupList(), _ => true);
             NavigateToStudentListCommand = new RelayCommand(_ => NavigateToStudentList(), _ => true);
@@ -66,7 +70,7 @@ namespace University.Domain.ViewModels
             {
                 CurrentPage = PageType.CoursesList;
 
-                MainWindow!.MainFrame.Navigate(new CoursesPage(new CoursesViewModel(_context)));
+                MainWindow!.MainFrame.Navigate(new CoursesPage(new CoursesViewModel(_context, _messageBoxService)));
             }
         }
 
@@ -76,7 +80,7 @@ namespace University.Domain.ViewModels
             {
                 CurrentPage = PageType.TeacherList;
 
-                MainWindow!.MainFrame.Navigate(new TeachersPage(new TeachersViewModel(_context)));
+                MainWindow!.MainFrame.Navigate(new TeachersPage(new TeachersViewModel(_context, _messageBoxService)));
             }
         }
 
@@ -86,7 +90,7 @@ namespace University.Domain.ViewModels
             {
                 CurrentPage = PageType.StudentList;
 
-                MainWindow!.MainFrame.Navigate(new StudentsPage(new StudentsViewModel(_context)));
+                MainWindow!.MainFrame.Navigate(new StudentsPage(new StudentsViewModel(_context, _messageBoxService)));
             }
         }
 
@@ -96,11 +100,11 @@ namespace University.Domain.ViewModels
             {
                 CurrentPage = PageType.GroupList;
 
-                MainWindow!.MainFrame.Navigate(new GroupsPage(new GroupsViewModel(_context)));
+                MainWindow!.MainFrame.Navigate(new GroupsPage(new GroupsViewModel(_context, _messageBoxService)));
             }
         }
 
-        private bool CanNavigate()
+        private static bool CanNavigate()
         {
             var content = MainWindow.MainFrame.Content;
             if (content != null)

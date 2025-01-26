@@ -1,6 +1,4 @@
 ﻿using System.Windows.Controls;
-using System.Windows.Input;
-using University.DataLayer.Models;
 using University.Domain.ViewModels;
 
 namespace University.Views

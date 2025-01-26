@@ -6,12 +6,14 @@ using System.Windows.Input;
 using University.DataLayer;
 using University.DataLayer.Models;
 using University.Domain.Commands;
+using University.Domain.Utilities;
 
 namespace University.Domain.ViewModels
 {
     public class CoursesViewModel : BaseCrudViewModel, INotifyPropertyChanged
     {
         private readonly UniversityContext _context;
+        private readonly IMessageBoxService _messageBoxService;
         private Course _selectedCourse = null!;
         public Course SelectedCourse
         {
@@ -32,9 +34,10 @@ namespace University.Domain.ViewModels
         public ICommand NameChangedCommand { get; }
         public ICommand DescriptionChangedCommand { get; }
 
-        public CoursesViewModel(UniversityContext context)
+        public CoursesViewModel(UniversityContext context, IMessageBoxService messageBoxService)
         {
             _context = context;
+            _messageBoxService = messageBoxService;
 
             Courses = new ObservableCollection<Course>(_context.Courses.Include(e => e.Groups).ToList());
 
@@ -89,7 +92,7 @@ namespace University.Domain.ViewModels
                 throw new InvalidOperationException("You can't delete a course that has groups.");
             }
 
-            var result = System.Windows.MessageBox.Show("Are you sure you want to delete the selected Course?", "Delete Course", System.Windows.MessageBoxButton.YesNo);
+            var result = _messageBoxService.Show("Are you sure you want to delete the selected Course?", "Delete Course", System.Windows.MessageBoxButton.YesNo);
 
             if (result == System.Windows.MessageBoxResult.Yes)
             {
