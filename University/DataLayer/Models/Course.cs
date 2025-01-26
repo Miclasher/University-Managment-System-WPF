@@ -3,52 +3,14 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace University.DataLayer.Models
 {
-    public class Course : EntityWithReactiveProperties
+    public class Course
     {
-        private string _name = string.Empty;
-        private string _description = string.Empty;
-        private ObservableCollection<Group> _groups = new ObservableCollection<Group>();
-
         [Column("COURSE_ID")]
         public Guid Id { get; set; }
         [Column("NAME")]
-        public string Name
-        {
-            get => _name;
-            set
-            {
-                if (_name != value)
-                {
-                    _name = value;
-                    OnPropertyChanged(nameof(Name));
-                }
-            }
-        }
-
+        public string Name { get; set; } = string.Empty;
         [Column("DESCRIPTION")]
-        public string Description
-        {
-            get => _description;
-            set
-            {
-                if (_description != value)
-                {
-                    _description = value;
-                    OnPropertyChanged(nameof(Description));
-                }
-            }
-        }
-        public ObservableCollection<Group> Groups
-        {
-            get => _groups;
-            set
-            {
-                if (_groups != value)
-                {
-                    _groups = value;
-                    OnPropertyChanged(nameof(Groups));
-                }
-            }
-        }
+        public string Description { get; set; } = string.Empty;
+        public ObservableCollection<Group> Groups { get; set; } = new ObservableCollection<Group>();
     }
 }

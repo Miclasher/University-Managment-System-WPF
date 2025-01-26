@@ -8,7 +8,7 @@ using University.Domain.Commands;
 
 namespace University.Domain.ViewModels
 {
-    public class CoursesViewModel : BaseCrudViewModel, INotifyPropertyChanged
+    public class CoursesViewModel : BaseViewModel, INotifyPropertyChanged
     {
         private readonly UniversityContext _context;
         private Course _selectedCourse = null!;
@@ -19,18 +19,7 @@ namespace University.Domain.ViewModels
             {
                 if (_selectedCourse != value)
                 {
-                    if (_selectedCourse != null!)
-                    {
-                        _selectedCourse.PropertyChanged -= OnSelectedCourseChanged;
-                    }
-                    
                     _selectedCourse = value;
-
-                    if (_selectedCourse != null!)
-                    {
-                        _selectedCourse.PropertyChanged += OnSelectedCourseChanged;
-                    }
-
                     OnPropertyChanged(nameof(SelectedCourse));
                 }
             }
@@ -101,11 +90,6 @@ namespace University.Domain.ViewModels
             };
             Courses.Add(newCourse);
             SelectedCourse = newCourse;
-        }
-
-        private void OnSelectedCourseChanged(object? sender, PropertyChangedEventArgs propertyChangedEventArgs)
-        {
-            IsSaved = false;
         }
     }
 }
