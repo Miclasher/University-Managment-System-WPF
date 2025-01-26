@@ -6,7 +6,7 @@ using University.DataLayer.Models;
 
 namespace University.Domain.ViewModels
 {
-    public class MainViewModel : BaseViewModel, INotifyPropertyChanged
+    public class MainViewModel : BaseCrudViewModel, INotifyPropertyChanged
     {
         private readonly UniversityContext _context;
         private Course _selectedCourse = null!;

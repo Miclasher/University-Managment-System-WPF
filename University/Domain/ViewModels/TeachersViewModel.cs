@@ -7,7 +7,7 @@ using University.Domain.Commands;
 
 namespace University.Domain.ViewModels
 {
-    public class TeachersViewModel : BaseViewModel, INotifyPropertyChanged
+    public class TeachersViewModel : BaseCrudViewModel, INotifyPropertyChanged
     {
         private readonly UniversityContext _context;
         private Teacher _selectedTeacher = null!;

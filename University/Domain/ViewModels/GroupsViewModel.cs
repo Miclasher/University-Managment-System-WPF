@@ -10,7 +10,7 @@ using University.Domain.Utilities;
 
 namespace University.Domain.ViewModels
 {
-    public class GroupsViewModel : BaseViewModel, INotifyPropertyChanged
+    public class GroupsViewModel : BaseCrudViewModel, INotifyPropertyChanged
     {
         private readonly UniversityContext _context;
         private Group _selectedGroup = null!;
