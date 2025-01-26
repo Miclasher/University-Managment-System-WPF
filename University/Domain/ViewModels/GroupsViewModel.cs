@@ -192,6 +192,16 @@ namespace University.Domain.ViewModels
 
         private void AddGroup()
         {
+            if (!Courses.Any())
+            {
+                throw new InvalidOperationException("No courses available. Please add a course first.");
+            }
+
+            if (!Teachers.Any())
+            {
+                throw new InvalidOperationException("No tutors available. Please add a teacher first.");
+            }
+
             var newGroup = new Group()
             {
                 Name = "New Group",

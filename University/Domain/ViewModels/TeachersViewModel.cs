@@ -76,13 +76,13 @@ namespace University.Domain.ViewModels
 
         private void AddTeacher()
         {
-            var NewTeacher = new Teacher()
+            var newTeacher = new Teacher()
             {
                 FirstName = "New",
                 LastName = "Teacher",
             };
-            Teachers.Add(NewTeacher);
-            SelectedTeacher = NewTeacher;
+            Teachers.Add(newTeacher);
+            SelectedTeacher = newTeacher;
         }
     }
 }

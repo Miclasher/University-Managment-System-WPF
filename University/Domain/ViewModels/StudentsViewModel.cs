@@ -80,14 +80,19 @@ namespace University.Domain.ViewModels
 
         private void AddStudent()
         {
-            var NewStudent = new Student()
+            if (!Groups.Any())
+            {
+                throw new InvalidOperationException("No groups available. Please add a group first.");
+            }
+
+            var newStudent = new Student()
             {
                 FirstName = "New",
                 LastName = "Student",
                 Group = Groups.FirstOrDefault()!
             };
-            Students.Add(NewStudent);
-            SelectedStudent = NewStudent;
+            Students.Add(newStudent);
+            SelectedStudent = newStudent;
         }
     }
 }

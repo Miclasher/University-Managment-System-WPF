@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:University"
+        xmlns:local="clr-namespace:University.Domain.ViewModels"
         mc:Ignorable="d"
         Title="University Managment System" 
         Height="550" Width="800"
@@ -18,15 +18,73 @@
         </Grid.ColumnDefinitions>
 
         <!-- Navigation Buttons -->
-        <UniformGrid Grid.Row="0" Grid.ColumnSpan="3" Rows="1" Columns="4" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+        <!-- Navigation Buttons -->
+        <UniformGrid Grid.Row="0" Grid.ColumnSpan="3" Rows="1" Columns="5" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
             <Button Content="Main page" Command="{Binding NavigateToMainCommand}" HorizontalAlignment="Stretch" 
-                VerticalAlignment="Stretch" Margin="5" FontSize="16" />
+                VerticalAlignment="Stretch" Margin="5" FontSize="16">
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Setter Property="Background" Value="LightGray"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding CurrentPage}" Value="{x:Static local:PageType.MainPage}">
+                                <Setter Property="Background" Value="LightBlue"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
+            <Button Content="Courses List" Command="{Binding NavigateToCoursesListCommand}" HorizontalAlignment="Stretch" 
+                VerticalAlignment="Stretch" Margin="5" FontSize="16">
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Setter Property="Background" Value="LightGray"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding CurrentPage}" Value="{x:Static local:PageType.CoursesList}">
+                                <Setter Property="Background" Value="LightBlue"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
             <Button Content="Group List" Command="{Binding NavigateToGroupListCommand}" HorizontalAlignment="Stretch" 
-                VerticalAlignment="Stretch" Margin="5" FontSize="16" />
-            <Button Content="Student List" Command="{Binding NavigateToStudentListCommand}" HorizontalAlignment="Stretch" 
-                VerticalAlignment="Stretch" Margin="5" FontSize="16" />
+                VerticalAlignment="Stretch" Margin="5" FontSize="16">
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Setter Property="Background" Value="LightGray"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding CurrentPage}" Value="{x:Static local:PageType.GroupList}">
+                                <Setter Property="Background" Value="LightBlue"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
             <Button Content="Teacher List" Command="{Binding NavigateToTeacherListCommand}" HorizontalAlignment="Stretch" 
-                VerticalAlignment="Stretch" Margin="5" FontSize="16" />
+                VerticalAlignment="Stretch" Margin="5" FontSize="16">
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Setter Property="Background" Value="LightGray"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding CurrentPage}" Value="{x:Static local:PageType.TeacherList}">
+                                <Setter Property="Background" Value="LightBlue"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
+            <Button Content="Student List" Command="{Binding NavigateToStudentListCommand}" HorizontalAlignment="Stretch" 
+                VerticalAlignment="Stretch" Margin="5" FontSize="16">
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Setter Property="Background" Value="LightGray"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding CurrentPage}" Value="{x:Static local:PageType.StudentList}">
+                                <Setter Property="Background" Value="LightBlue"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
         </UniformGrid>
 
         <!-- Frame for Navigation -->
