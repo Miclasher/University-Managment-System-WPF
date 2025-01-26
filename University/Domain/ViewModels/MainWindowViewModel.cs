@@ -1,4 +1,5 @@
-﻿using System.Windows.Input;
+﻿using System.Windows;
+using System.Windows.Input;
 using University.DataLayer;
 using University.Domain.Commands;
 using University.Views;
@@ -51,37 +52,79 @@ namespace University.Domain.ViewModels
 
         private void NavigateToMainPage()
         {
-            CurrentPage = PageType.MainPage;
+            if (CanNavigate())
+            {
+                CurrentPage = PageType.MainPage;
 
-            MainWindow!.MainFrame.Navigate(new MainPage(new MainViewModel(_context)));
+                MainWindow!.MainFrame.Navigate(new MainPage(new MainViewModel(_context)));
+            }
         }
 
         private void NavigateToCoursesList()
         {
-            CurrentPage = PageType.CoursesList;
+            if (CanNavigate())
+            {
+                CurrentPage = PageType.CoursesList;
 
-            MainWindow!.MainFrame.Navigate(new CoursesPage(new CoursesViewModel(_context)));
+                MainWindow!.MainFrame.Navigate(new CoursesPage(new CoursesViewModel(_context)));
+            }
         }
 
         private void NavigateToTeacherList()
         {
-            CurrentPage = PageType.TeacherList;
+            if (CanNavigate())
+            {
+                CurrentPage = PageType.TeacherList;
 
-            MainWindow!.MainFrame.Navigate(new TeachersPage(new TeachersViewModel(_context)));
+                MainWindow!.MainFrame.Navigate(new TeachersPage(new TeachersViewModel(_context)));
+            }
         }
 
         private void NavigateToStudentList()
         {
-            CurrentPage = PageType.StudentList;
+            if (CanNavigate())
+            {
+                CurrentPage = PageType.StudentList;
 
-            MainWindow!.MainFrame.Navigate(new StudentsPage(new StudentsViewModel(_context)));
+                MainWindow!.MainFrame.Navigate(new StudentsPage(new StudentsViewModel(_context)));
+            }
         }
 
         private void NavigateToGroupList()
         {
-            CurrentPage = PageType.GroupList;
+            if (CanNavigate())
+            {
+                CurrentPage = PageType.GroupList;
 
-            MainWindow!.MainFrame.Navigate(new GroupsPage(new GroupsViewModel(_context)));
+                MainWindow!.MainFrame.Navigate(new GroupsPage(new GroupsViewModel(_context)));
+            }
+        }
+
+        private bool CanNavigate()
+        {
+            var content = MainWindow.MainFrame.Content;
+            if (content != null)
+            {
+                var dataContextProperty = content.GetType().GetProperty("DataContext");
+                if (dataContextProperty != null)
+                {
+                    var dataContext = dataContextProperty.GetValue(content);
+                    if (dataContext is BaseCrudViewModel viewModel)
+                    {
+                        if (!viewModel.IsSaved)
+                        {
+                            var result = MessageBox.Show("There are unsaved changes. Do you wish to navigate to another page without saving?", "Unsaved changes warning", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+
+                            if (result == MessageBoxResult.No)
+                            {
+                                return false;
+                            }
+                        }
+                    }
+                }
+            }
+
+            return true;
         }
     }
 }
