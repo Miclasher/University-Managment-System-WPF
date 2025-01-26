@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Windows.Controls;
 using System.Windows.Input;
 using University.DataLayer;
 using University.DataLayer.Models;
@@ -7,7 +8,7 @@ using University.Domain.Commands;
 
 namespace University.Domain.ViewModels
 {
-    public class TeachersViewModel : BaseViewModel, INotifyPropertyChanged
+    public class TeachersViewModel : BaseCrudViewModel, INotifyPropertyChanged
     {
         private readonly UniversityContext _context;
         private Teacher _selectedTeacher = null!;
@@ -27,6 +28,9 @@ namespace University.Domain.ViewModels
         public ICommand AddTeacherCommand { get; }
         public ICommand DeleteTeacherCommand { get; }
         public ICommand SaveTeacherCommand { get; }
+        public ICommand FirstNameChangedCommand { get; }
+        public ICommand LastNameChangedCommand { get; }
+
         public TeachersViewModel(UniversityContext context)
         {
             _context = context;
@@ -36,6 +40,26 @@ namespace University.Domain.ViewModels
             AddTeacherCommand = new RelayCommand(_ => AddTeacher(), _ => true);
             DeleteTeacherCommand = new RelayCommand(_ => DeleteTeacher(), _ => true);
             SaveTeacherCommand = new RelayCommand(_ => SaveTeacher(), _ => true);
+            FirstNameChangedCommand = new RelayCommand(FirstNameChanged, _ => true);
+            LastNameChangedCommand = new RelayCommand(LastNameChanged, _ => true);
+        }
+
+        private void LastNameChanged(object? obj)
+        {
+            var control = obj as TextBox;
+            if (control!.Text != SelectedTeacher.LastName)
+            {
+                IsSaved = false;
+            }
+        }
+
+        private void FirstNameChanged(object? obj)
+        {
+            var control = obj as TextBox;
+            if (control!.Text != SelectedTeacher.FirstName)
+            {
+                IsSaved = false;
+            }
         }
 
         private void SaveTeacher()
@@ -51,6 +75,8 @@ namespace University.Domain.ViewModels
             {
                 _context.Teachers.Update(SelectedTeacher);
             }
+
+            IsSaved = true;
         }
 
         private void DeleteTeacher()
@@ -72,6 +98,8 @@ namespace University.Domain.ViewModels
                     Teachers.Remove(SelectedTeacher);
                 }
             }
+
+            IsSaved = true;
         }
 
         private void AddTeacher()
@@ -83,6 +111,8 @@ namespace University.Domain.ViewModels
             };
             Teachers.Add(newTeacher);
             SelectedTeacher = newTeacher;
+
+            IsSaved = false;
         }
     }
 }

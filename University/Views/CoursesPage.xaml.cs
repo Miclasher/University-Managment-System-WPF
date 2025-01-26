@@ -27,5 +27,27 @@ namespace University.Views
 
             DataContext = model;
         }
+
+        private void NameChangedEvent(object sender, TextChangedEventArgs e)
+        {
+            if (DataContext is CoursesViewModel viewModel && sender is TextBox textBox)
+            {
+                if (viewModel.NameChangedCommand.CanExecute(textBox))
+                {
+                    viewModel.NameChangedCommand.Execute(textBox);
+                }
+            }
+        }
+
+        private void DescriptionChangedEvent(object sender, TextChangedEventArgs e)
+        {
+            if (DataContext is CoursesViewModel viewModel && sender is TextBox textBox)
+            {
+                if (viewModel.DescriptionChangedCommand.CanExecute(textBox))
+                {
+                    viewModel.DescriptionChangedCommand.Execute(textBox);
+                }
+            }
+        }
     }
 }

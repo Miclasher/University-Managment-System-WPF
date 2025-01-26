@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Windows.Controls;
 using System.Windows.Input;
 using University.DataLayer;
 using University.DataLayer.Models;
@@ -8,7 +9,7 @@ using University.Domain.Commands;
 
 namespace University.Domain.ViewModels
 {
-    public class CoursesViewModel : BaseViewModel, INotifyPropertyChanged
+    public class CoursesViewModel : BaseCrudViewModel, INotifyPropertyChanged
     {
         private readonly UniversityContext _context;
         private Course _selectedCourse = null!;
@@ -28,6 +29,8 @@ namespace University.Domain.ViewModels
         public ICommand AddCourseCommand { get; }
         public ICommand DeleteCourseCommand { get; }
         public ICommand SaveCourseCommand { get; }
+        public ICommand NameChangedCommand { get; }
+        public ICommand DescriptionChangedCommand { get; }
 
         public CoursesViewModel(UniversityContext context)
         {
@@ -38,6 +41,26 @@ namespace University.Domain.ViewModels
             AddCourseCommand = new RelayCommand(_ => AddCourse(), _ => true);
             DeleteCourseCommand = new RelayCommand(_ => DeleteCourse(), _ => true);
             SaveCourseCommand = new RelayCommand(_ => SaveCourse(), _ => true);
+            NameChangedCommand = new RelayCommand(NameChanged, _ => true);
+            DescriptionChangedCommand = new RelayCommand(DescriptionChanged, _ => true);
+        }
+
+        private void NameChanged(object? textBox)
+        {
+            var control = textBox as TextBox;
+            if (control!.Text != SelectedCourse.Name)
+            {
+                IsSaved = false;
+            }
+        }
+
+        private void DescriptionChanged(object? textBox)
+        {
+            var control = textBox as TextBox;
+            if (control!.Text != SelectedCourse.Description)
+            {
+                IsSaved = false;
+            }
         }
 
         private void SaveCourse()
@@ -53,6 +76,8 @@ namespace University.Domain.ViewModels
             {
                 _context.Courses.Update(SelectedCourse);
             }
+
+            IsSaved = true;
         }
 
         private void DeleteCourse()
@@ -79,6 +104,8 @@ namespace University.Domain.ViewModels
                     Courses.Remove(SelectedCourse);
                 }
             }
+
+            IsSaved = true;
         }
 
         private void AddCourse()
@@ -90,6 +117,7 @@ namespace University.Domain.ViewModels
             };
             Courses.Add(newCourse);
             SelectedCourse = newCourse;
+            IsSaved = false;
         }
     }
 }

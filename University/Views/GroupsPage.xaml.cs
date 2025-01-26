@@ -1,4 +1,6 @@
 ﻿using System.Windows.Controls;
+using System.Windows.Input;
+using University.DataLayer.Models;
 using University.Domain.ViewModels;
 
 namespace University.Views
@@ -13,6 +15,39 @@ namespace University.Views
             InitializeComponent();
 
             DataContext = model;
+        }
+
+        private void NameChangedEvent(object sender, TextChangedEventArgs e)
+        {
+            if (DataContext is GroupsViewModel viewModel && sender is TextBox textBox)
+            {
+                if (viewModel.NameChangedCommand.CanExecute(textBox))
+                {
+                    viewModel.NameChangedCommand.Execute(textBox);
+                }
+            }
+        }
+
+        private void TeacherChangedEvent(object? sender, EventArgs eventArgs)
+        {
+            if (DataContext is GroupsViewModel viewModel && sender is ComboBox comboBox)
+            {
+                if (viewModel.TeacherChangedCommand.CanExecute(comboBox))
+                {
+                    viewModel.TeacherChangedCommand.Execute(comboBox);
+                }
+            }
+        }
+
+        private void CourseChangedEvent(object? sender, EventArgs eventArgs)
+        {
+            if (DataContext is GroupsViewModel viewModel && sender is ComboBox comboBox)
+            {
+                if (viewModel.CourseChangedCommand.CanExecute(comboBox))
+                {
+                    viewModel.CourseChangedCommand.Execute(comboBox);
+                }
+            }
         }
     }
 }

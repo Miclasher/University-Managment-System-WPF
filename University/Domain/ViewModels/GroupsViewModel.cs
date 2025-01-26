@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
+using System.Windows.Controls;
 using System.Windows.Input;
 using University.DataLayer;
 using University.DataLayer.Models;
@@ -10,7 +11,7 @@ using University.Domain.Utilities;
 
 namespace University.Domain.ViewModels
 {
-    public class GroupsViewModel : BaseViewModel, INotifyPropertyChanged
+    public class GroupsViewModel : BaseCrudViewModel, INotifyPropertyChanged
     {
         private readonly UniversityContext _context;
         private Group _selectedGroup = null!;
@@ -21,6 +22,9 @@ namespace University.Domain.ViewModels
         public ICommand ImportStudentsCommand { get; }
         public ICommand ExportStudentsCommand { get; }
         public ICommand ExportGroupToPdfCommand { get; }
+        public ICommand NameChangedCommand { get; }
+        public ICommand TeacherChangedCommand { get; }
+        public ICommand CourseChangedCommand { get; }
         public Group SelectedGroup
         {
             get => _selectedGroup;
@@ -36,6 +40,7 @@ namespace University.Domain.ViewModels
         public ObservableCollection<Group> Groups { get; }
         public ObservableCollection<Teacher> Teachers { get; }
         public ObservableCollection<Course> Courses { get; }
+
         public GroupsViewModel(UniversityContext context)
         {
             _context = context;
@@ -51,6 +56,28 @@ namespace University.Domain.ViewModels
             ImportStudentsCommand = new RelayCommand(_ => ImportStudents(), _ => true);
             ExportStudentsCommand = new RelayCommand(_ => ExportStudents(), _ => true);
             ExportGroupToPdfCommand = new RelayCommand(_ => ExportGroupToPdf(), _ => true);
+            NameChangedCommand = new RelayCommand(NameChanged, _ => true);
+            TeacherChangedCommand = new RelayCommand(_ =>TeacherChanged(), _ => true);
+            CourseChangedCommand = new RelayCommand(_ => CourseChanged(), _ => true);
+        }
+
+        private void CourseChanged()
+        {
+            IsSaved = false;
+        }
+
+        private void TeacherChanged()
+        {
+            IsSaved = false;
+        }
+
+        private void NameChanged(object? obj)
+        {
+            var control = obj as TextBox;
+            if (control!.Text != SelectedGroup.Name)
+            {
+                IsSaved = false;
+            }
         }
 
         private void ExportGroupToPdf()
@@ -107,6 +134,8 @@ namespace University.Domain.ViewModels
 
                 SaveGroup();
             }
+
+            IsSaved = true;
         }
 
         private void ExportStudents()
@@ -159,6 +188,8 @@ namespace University.Domain.ViewModels
                     System.Windows.MessageBox.Show("Group has students. Please clear the group first.", "Delete Group", System.Windows.MessageBoxButton.OK);
                 }
             }
+
+            IsSaved = true;
         }
 
         private void SaveGroup()
@@ -174,6 +205,8 @@ namespace University.Domain.ViewModels
                 _context.Groups.Update(SelectedGroup);
             }
             _context.SaveChanges();
+
+            IsSaved = true;
         }
 
         private void ClearGroup()
@@ -210,6 +243,8 @@ namespace University.Domain.ViewModels
             };
             Groups.Add(newGroup);
             SelectedGroup = newGroup;
+
+            IsSaved = false;
         }
     }
 }

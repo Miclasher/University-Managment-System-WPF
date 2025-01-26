@@ -37,15 +37,28 @@
         <!--Student details-->
         <StackPanel Grid.Column="1" Grid.Row="0" Orientation= "Vertical" Margin="10">
             <TextBlock Text="Student details" FontSize="24" FontStretch="Expanded"/>
-            
+
+            <TextBlock Text="Not saved" FontSize="16" Foreground="Red" Margin="5">
+                <TextBlock.Style>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsSaved}" Value="False">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBlock.Style>
+            </TextBlock>
+
             <TextBlock Text="Name: " FontSize="16"/>
-            <TextBox Text="{Binding SelectedStudent.FirstName}" FontSize="16" Margin="15"/>
+            <TextBox Text="{Binding SelectedStudent.FirstName}" FontSize="16" Margin="15" TextChanged="FirstNameChangedEvent"/>
             
             <TextBlock Text="Surname: " FontSize="16"/>
-            <TextBox Text="{Binding SelectedStudent.LastName}" FontSize="16" Margin="15"/>
+            <TextBox Text="{Binding SelectedStudent.LastName}" FontSize="16" Margin="15" TextChanged="LastNameChangedEvent"/>
             
             <TextBlock Text="Group: " FontSize="16"/>
-            <ComboBox ItemsSource="{Binding Groups}" SelectedItem="{Binding SelectedStudent.Group}" DisplayMemberPath="Name" FontSize="16" Margin="15"/>
+            <ComboBox ItemsSource="{Binding Groups}" SelectedItem="{Binding SelectedStudent.Group}" DisplayMemberPath="Name" FontSize="16" Margin="15" DropDownOpened="GroupChangedEvent"/>
 
             <Button FontSize="16" Grid.Row="0" Grid.Column="1" Content="Delete" Command="{Binding DeleteStudentCommand}" Margin="15"/>
         </StackPanel>

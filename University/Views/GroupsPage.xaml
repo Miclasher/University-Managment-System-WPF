@@ -24,15 +24,28 @@
         <!--Group details-->
         <StackPanel Grid.Column="1" Grid.Row="0" Orientation= "Vertical" Margin="10">
             <TextBlock Text="Group details" FontSize="24" FontStretch="Expanded"/>
-            
+
+            <TextBlock Text="Not saved" FontSize="16" Foreground="Red" Margin="5">
+                <TextBlock.Style>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsSaved}" Value="False">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBlock.Style>
+            </TextBlock>
+
             <TextBlock Text="Name: " FontSize="16"/>
-            <TextBox Text="{Binding SelectedGroup.Name}" FontSize="16" Margin="15"/>
+            <TextBox Text="{Binding SelectedGroup.Name}" FontSize="16" Margin="15" TextChanged="NameChangedEvent"/>
             
             <TextBlock Text="Teacher: " FontSize="16"/>
-            <ComboBox ItemsSource="{Binding Teachers}" SelectedItem ="{Binding SelectedGroup.Teacher}" DisplayMemberPath="FirstName" FontSize="16" Margin="15"/>
+            <ComboBox ItemsSource="{Binding Teachers}" SelectedItem ="{Binding SelectedGroup.Teacher}" DisplayMemberPath="FirstName" FontSize="16" Margin="15" DropDownOpened="TeacherChangedEvent"/>
 
             <TextBlock Text="Course: " FontSize="16"/>
-            <ComboBox ItemsSource="{Binding Courses}" SelectedItem ="{Binding SelectedGroup.Course}" DisplayMemberPath="Name" FontSize="16" Margin="15"/>
+            <ComboBox ItemsSource="{Binding Courses}" SelectedItem ="{Binding SelectedGroup.Course}" DisplayMemberPath="Name" FontSize="16" Margin="15" DropDownOpened="CourseChangedEvent"/>
 
             <Grid  Margin="10">
                 <Grid.ColumnDefinitions>

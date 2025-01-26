@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Windows.Controls;
 using System.Windows.Input;
 using University.DataLayer;
 using University.DataLayer.Models;
@@ -8,7 +9,7 @@ using University.Domain.Commands;
 
 namespace University.Domain.ViewModels
 {
-    public class StudentsViewModel : BaseViewModel, INotifyPropertyChanged
+    public class StudentsViewModel : BaseCrudViewModel, INotifyPropertyChanged
     {
         private readonly UniversityContext _context;
         private Student _selectedStudent = null!;
@@ -29,6 +30,9 @@ namespace University.Domain.ViewModels
         public ICommand AddStudentCommand { get; }
         public ICommand DeleteStudentCommand { get; }
         public ICommand SaveStudentCommand { get; }
+        public ICommand FirstNameChangedCommand { get; }
+        public ICommand LastNameChangedCommand { get; }
+        public ICommand GroupChangedCommand { get; }
 
         public StudentsViewModel(UniversityContext context)
         {
@@ -40,6 +44,32 @@ namespace University.Domain.ViewModels
             AddStudentCommand = new RelayCommand(_ => AddStudent(), _ => true);
             DeleteStudentCommand = new RelayCommand(_ => DeleteStudent(), _ => true);
             SaveStudentCommand = new RelayCommand(_ => SaveStudent(), _ => true);
+            FirstNameChangedCommand = new RelayCommand(FirstNameChanged, _ => true);
+            LastNameChangedCommand = new RelayCommand(LastNameChanged, _ => true);
+            GroupChangedCommand = new RelayCommand(_ => GroupChanged(), _ => true);
+        }
+
+        private void GroupChanged()
+        {
+            IsSaved = false;
+        }
+
+        private void LastNameChanged(object? obj)
+        {
+            var control = obj as TextBox;
+            if (control!.Text != SelectedStudent.LastName)
+            {
+                IsSaved = false;
+            }
+        }
+
+        private void FirstNameChanged(object? obj)
+        {
+            var control = obj as TextBox;
+            if (control!.Text != SelectedStudent.FirstName)
+            {
+                IsSaved = false;
+            }
         }
 
         private void SaveStudent()
@@ -55,6 +85,8 @@ namespace University.Domain.ViewModels
             {
                 _context.Students.Update(SelectedStudent);
             }
+
+            IsSaved = true;
         }
 
         private void DeleteStudent()
@@ -76,6 +108,8 @@ namespace University.Domain.ViewModels
                     Students.Remove(SelectedStudent);
                 }
             }
+
+            IsSaved = true;
         }
 
         private void AddStudent()
@@ -93,6 +127,8 @@ namespace University.Domain.ViewModels
             };
             Students.Add(newStudent);
             SelectedStudent = newStudent;
+
+            IsSaved = false;
         }
     }
 }
