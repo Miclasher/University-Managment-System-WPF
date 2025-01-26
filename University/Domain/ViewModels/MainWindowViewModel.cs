@@ -8,6 +8,7 @@ namespace University.Domain.ViewModels
     public class MainWindowViewModel
     {
         private readonly UniversityContext _context;
+        private static MainWindow MainWindow => (MainWindow)App.Current.MainWindow;
 
         public ICommand NavigateToMainCommand { get; }
         public ICommand NavigateToGroupListCommand { get; }
@@ -25,26 +26,22 @@ namespace University.Domain.ViewModels
 
         private void NavigateToMainPage()
         {
-            var mainWindow = App.Current.MainWindow as MainWindow;
-            mainWindow!.MainFrame.Navigate(new MainPage(new MainViewModel(_context)));
+            MainWindow!.MainFrame.Navigate(new MainPage(new MainViewModel(_context)));
         }
 
         private void NavigateToTeacherList()
         {
-            var mainWindow = App.Current.MainWindow as MainWindow;
-            mainWindow!.MainFrame.Navigate(new TeachersPage(new TeachersViewModel(_context)));
+            MainWindow!.MainFrame.Navigate(new TeachersPage(new TeachersViewModel(_context)));
         }
 
         private void NavigateToStudentList()
         {
-            var mainWindow = App.Current.MainWindow as MainWindow;
-            mainWindow!.MainFrame.Navigate(new StudentsPage(new StudentsViewModel(_context)));
+            MainWindow!.MainFrame.Navigate(new StudentsPage(new StudentsViewModel(_context)));
         }
 
         private void NavigateToGroupList()
         {
-            var mainWindow = App.Current.MainWindow as MainWindow;
-            mainWindow!.MainFrame.Navigate(new GroupsPage(new GroupsViewModel(_context)));
+            MainWindow!.MainFrame.Navigate(new GroupsPage(new GroupsViewModel(_context)));
         }
     }
 }

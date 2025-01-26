@@ -71,7 +71,7 @@ namespace University.Domain.ViewModels
 
             if (result == true)
             {
-                string filename = dialog.FileName;
+                var filename = dialog.FileName;
                 using var fs = new FileStream(filename, FileMode.OpenOrCreate);
 
                 PdfExporter.ExportPdfGroup(fs, SelectedGroup);
@@ -96,7 +96,7 @@ namespace University.Domain.ViewModels
 
             if (result == true)
             {
-                string filename = dialog.FileName;
+                var filename = dialog.FileName;
                 using var fs = new FileStream(filename, FileMode.Open);
                 var students = CsvHandler.ImportStudents(fs);
 
@@ -127,7 +127,7 @@ namespace University.Domain.ViewModels
 
             if (result == true)
             {
-                string filename = dialog.FileName;
+                var filename = dialog.FileName;
                 using var fs = new FileStream(filename, FileMode.OpenOrCreate);
 
                 CsvHandler.ExportStudents(fs, SelectedGroup);
@@ -192,14 +192,14 @@ namespace University.Domain.ViewModels
 
         private void AddGroup()
         {
-            var NewGroup = new Group()
+            var newGroup = new Group()
             {
                 Name = "New Group",
                 Teacher = Teachers.First(),
                 Course = Courses.First()
             };
-            Groups.Add(NewGroup);
-            SelectedGroup = NewGroup;
+            Groups.Add(newGroup);
+            SelectedGroup = newGroup;
         }
     }
 }
