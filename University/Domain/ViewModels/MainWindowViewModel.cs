@@ -7,31 +7,22 @@ using University.Views;
 
 namespace University.Domain.ViewModels
 {
-    public enum PageType
-    {
-        MainPage,
-        CoursesList,
-        GroupList,
-        TeacherList,
-        StudentList
-    }
-
     public class MainWindowViewModel : BaseViewModel
     {
         private readonly UniversityContext _context;
         private readonly IMessageBoxService _messageBoxService;
         private static MainWindow MainWindow => (MainWindow)App.Current.MainWindow;
 
-        private PageType _currentPage;
-        public PageType CurrentPage
+        private BaseViewModel _currentViewModel;
+        public BaseViewModel CurrentViewModel
         {
-            get => _currentPage;
+            get => _currentViewModel;
             set
             {
-                if (_currentPage != value)
+                if (_currentViewModel != value)
                 {
-                    _currentPage = value;
-                    OnPropertyChanged(nameof(CurrentPage));
+                    _currentViewModel = value;
+                    OnPropertyChanged(nameof(CurrentViewModel));
                 }
             }
         }
@@ -47,6 +38,8 @@ namespace University.Domain.ViewModels
             _context = context;
             _messageBoxService = messageBoxService;
 
+            _currentViewModel = new MainViewModel(_context);
+
             NavigateToMainCommand = new RelayCommand(_ => NavigateToMainPage(), _ => true);
             NavigateToGroupListCommand = new RelayCommand(_ => NavigateToGroupList(), _ => true);
             NavigateToStudentListCommand = new RelayCommand(_ => NavigateToStudentList(), _ => true);
@@ -58,9 +51,10 @@ namespace University.Domain.ViewModels
         {
             if (CanNavigate())
             {
-                CurrentPage = PageType.MainPage;
+                var viewModel = new MainViewModel(_context);
 
-                MainWindow!.MainFrame.Navigate(new MainPage(new MainViewModel(_context)));
+                CurrentViewModel = viewModel;
+                MainWindow!.MainFrame.Navigate(new MainPage(viewModel));
             }
         }
 
@@ -68,9 +62,10 @@ namespace University.Domain.ViewModels
         {
             if (CanNavigate())
             {
-                CurrentPage = PageType.CoursesList;
+                var viewModel = new CoursesViewModel(_context, _messageBoxService);
 
-                MainWindow!.MainFrame.Navigate(new CoursesPage(new CoursesViewModel(_context, _messageBoxService)));
+                CurrentViewModel = viewModel;
+                MainWindow!.MainFrame.Navigate(new CoursesPage(viewModel));
             }
         }
 
@@ -78,9 +73,10 @@ namespace University.Domain.ViewModels
         {
             if (CanNavigate())
             {
-                CurrentPage = PageType.TeacherList;
+                var viewModel = new TeachersViewModel(_context, _messageBoxService);
 
-                MainWindow!.MainFrame.Navigate(new TeachersPage(new TeachersViewModel(_context, _messageBoxService)));
+                CurrentViewModel = viewModel;
+                MainWindow!.MainFrame.Navigate(new TeachersPage(viewModel));
             }
         }
 
@@ -88,9 +84,10 @@ namespace University.Domain.ViewModels
         {
             if (CanNavigate())
             {
-                CurrentPage = PageType.StudentList;
+                var viewModel = new StudentsViewModel(_context, _messageBoxService);
 
-                MainWindow!.MainFrame.Navigate(new StudentsPage(new StudentsViewModel(_context, _messageBoxService)));
+                CurrentViewModel = viewModel;
+                MainWindow!.MainFrame.Navigate(new StudentsPage(viewModel));
             }
         }
 
@@ -98,32 +95,24 @@ namespace University.Domain.ViewModels
         {
             if (CanNavigate())
             {
-                CurrentPage = PageType.GroupList;
+                var viewModel = new GroupsViewModel(_context, _messageBoxService);
 
-                MainWindow!.MainFrame.Navigate(new GroupsPage(new GroupsViewModel(_context, _messageBoxService)));
+                CurrentViewModel = viewModel;
+                MainWindow!.MainFrame.Navigate(new GroupsPage(viewModel));
             }
         }
 
-        private static bool CanNavigate()
+        private bool CanNavigate()
         {
-            var content = MainWindow.MainFrame.Content;
-            if (content != null)
+            if (CurrentViewModel is BaseCrudViewModel viewModel)
             {
-                var dataContextProperty = content.GetType().GetProperty("DataContext");
-                if (dataContextProperty != null)
+                if (!viewModel.IsSaved)
                 {
-                    var dataContext = dataContextProperty.GetValue(content);
-                    if (dataContext is BaseCrudViewModel viewModel)
-                    {
-                        if (!viewModel.IsSaved)
-                        {
-                            var result = MessageBox.Show("There are unsaved changes. Do you wish to navigate to another page without saving?", "Unsaved changes warning", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                    var result = MessageBox.Show("There are unsaved changes. Do you wish to navigate to another page without saving?", "Unsaved changes warning", MessageBoxButton.YesNo, MessageBoxImage.Warning);
 
-                            if (result == MessageBoxResult.No)
-                            {
-                                return false;
-                            }
-                        }
+                    if (result == MessageBoxResult.No)
+                    {
+                        return false;
                     }
                 }
             }
