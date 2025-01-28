@@ -29,7 +29,15 @@ namespace University.Domain.ViewModels
 
                     if (result == MessageBoxResult.Yes)
                     {
-                        SaveTeacher();
+                        try
+                        {
+                            SaveTeacher();
+                        }
+                        catch(InvalidOperationException e)
+                        {
+                            _messageBoxService.Show(e.Message, "Error", MessageBoxButton.OK);
+                            return;
+                        }
                     }
                     else
                     {
@@ -98,6 +106,16 @@ namespace University.Domain.ViewModels
         private void SaveTeacher()
         {
             ArgumentNullException.ThrowIfNull(SelectedTeacher);
+
+            if (string.IsNullOrWhiteSpace(SelectedTeacher.FirstName))
+            {
+                throw new InvalidOperationException("Name cannot be empty.");
+            }
+
+            if (string.IsNullOrWhiteSpace(SelectedTeacher.LastName))
+            {
+                throw new InvalidOperationException("Surname cannot be empty.");
+            }
 
             if (SelectedTeacher.Id == Guid.Empty)
             {

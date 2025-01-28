@@ -41,7 +41,15 @@ namespace University.Domain.ViewModels
 
                     if (result == MessageBoxResult.Yes)
                     {
-                        SaveGroup();
+                        try
+                        {
+                            SaveGroup();
+                        }
+                        catch (InvalidOperationException e)
+                        {
+                            _messageBoxService.Show(e.Message, "Error", MessageBoxButton.OK);
+                            return;
+                        }
                     }
                     else
                     {
@@ -221,6 +229,11 @@ namespace University.Domain.ViewModels
         private void SaveGroup()
         {
             ArgumentNullException.ThrowIfNull(SelectedGroup);
+
+            if (string.IsNullOrWhiteSpace(SelectedGroup.Name))
+            {
+                throw new InvalidOperationException("Group name cannot be empty.");
+            }
 
             if (SelectedGroup.Id == Guid.Empty)
             {

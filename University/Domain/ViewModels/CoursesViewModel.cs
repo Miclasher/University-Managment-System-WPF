@@ -30,7 +30,15 @@ namespace University.Domain.ViewModels
 
                     if (result == MessageBoxResult.Yes)
                     {
-                        SaveCourse();
+                        try
+                        {
+                            SaveCourse();
+                        }
+                        catch (InvalidOperationException e)
+                        {
+                            _messageBoxService.Show(e.Message, "Error", MessageBoxButton.OK);
+                            return;
+                        }
                     }
                     else
                     {
@@ -99,6 +107,11 @@ namespace University.Domain.ViewModels
         private void SaveCourse()
         {
             ArgumentNullException.ThrowIfNull(SelectedCourse);
+
+            if (string.IsNullOrWhiteSpace(SelectedCourse.Name))
+            {
+                throw new InvalidOperationException("Course name can't be empty.");
+            }
 
             if (SelectedCourse.Id == Guid.Empty)
             {

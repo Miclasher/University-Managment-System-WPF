@@ -30,7 +30,15 @@ namespace University.Domain.ViewModels
 
                     if (result == MessageBoxResult.Yes)
                     {
-                        SaveStudent();
+                        try
+                        {
+                            SaveStudent();
+                        }
+                        catch (InvalidOperationException e)
+                        {
+                            _messageBoxService.Show(e.Message, "Error", MessageBoxButton.OK);
+                            return;
+                        }
                     }
                     else
                     {
@@ -108,6 +116,16 @@ namespace University.Domain.ViewModels
         private void SaveStudent()
         {
             ArgumentNullException.ThrowIfNull(SelectedStudent);
+
+            if (string.IsNullOrWhiteSpace(SelectedStudent.FirstName))
+            {
+                throw new InvalidOperationException("Name cannot be empty.");
+            }
+
+            if (string.IsNullOrWhiteSpace(SelectedStudent.LastName))
+            {
+                throw new InvalidOperationException("Surname cannot be empty.");
+            }
 
             if (SelectedStudent.Id == Guid.Empty)
             {
