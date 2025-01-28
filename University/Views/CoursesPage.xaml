@@ -25,6 +25,16 @@
 
         <!--Course details-->
         <StackPanel Grid.Column="1" Grid.Row="0" Orientation= "Vertical" Margin="10">
+            <StackPanel.Style>
+                <Style TargetType="StackPanel">
+                    <Setter Property="Visibility" Value="Visible"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding SelectedCourse}" Value="{x:Null}">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </StackPanel.Style>
             <TextBlock Text="Course details" FontSize="24" FontStretch="Expanded"/>
 
             <TextBlock Text="Not saved" FontSize="16" Foreground="Red" Margin="5">

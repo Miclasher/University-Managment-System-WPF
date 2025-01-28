@@ -33,6 +33,16 @@
 
         <!--Teacher details-->
         <StackPanel Grid.Column="1" Grid.Row="0" Orientation= "Vertical" Margin="10">
+            <StackPanel.Style>
+                <Style TargetType="StackPanel">
+                    <Setter Property="Visibility" Value="Visible"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding SelectedTeacher}" Value="{x:Null}">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </StackPanel.Style>
             <TextBlock Text="Teacher details" FontSize="24" FontStretch="Expanded"/>
 
             <TextBlock Text="Not saved" FontSize="16" Foreground="Red" Margin="5">
@@ -58,7 +68,7 @@
         </StackPanel>
 
         <!--Buttons-->
-        <UniformGrid Grid.Row="1" Grid.ColumnSpan="2">
+        <UniformGrid Grid.Row="1" Grid.ColumnSpan="2" Grid.Column="0">
             <Button FontSize="16" Content="Add" Command="{Binding AddTeacherCommand}"/>
             <Button FontSize="16" Content="Save" Command="{Binding SaveTeacherCommand}"/>
         </UniformGrid>
