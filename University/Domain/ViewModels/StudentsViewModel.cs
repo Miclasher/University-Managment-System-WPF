@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using University.DataLayer;
@@ -20,6 +21,23 @@ namespace University.Domain.ViewModels
             get => _selectedStudent;
             set
             {
+                if (!IsSaved && _selectedStudent != null!)
+                {
+                    var result = _messageBoxService.Show(
+                        "You have unsaved changes. Fo you want to save them and proceed?",
+                        "Warning",
+                        MessageBoxButton.YesNo);
+
+                    if (result == MessageBoxResult.Yes)
+                    {
+                        SaveStudent();
+                    }
+                    else
+                    {
+                        return;
+                    }
+                }
+
                 if (_selectedStudent != value)
                 {
                     _selectedStudent = value;
@@ -59,7 +77,13 @@ namespace University.Domain.ViewModels
 
         private void LastNameChanged(object? obj)
         {
+            if (SelectedStudent == null!)
+            {
+                return;
+            }
+
             var control = obj as TextBox;
+
             if (control!.Text != SelectedStudent.LastName)
             {
                 IsSaved = false;
@@ -68,7 +92,13 @@ namespace University.Domain.ViewModels
 
         private void FirstNameChanged(object? obj)
         {
+            if (SelectedStudent == null!)
+            {
+                return;
+            }
+
             var control = obj as TextBox;
+
             if (control!.Text != SelectedStudent.FirstName)
             {
                 IsSaved = false;

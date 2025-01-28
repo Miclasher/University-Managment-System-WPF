@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using University.DataLayer;
@@ -31,6 +32,23 @@ namespace University.Domain.ViewModels
             get => _selectedGroup;
             set
             {
+                if (!IsSaved && _selectedGroup != null!)
+                {
+                    var result = _messageBoxService.Show(
+                        "You have unsaved changes. Do you want to save and proceed?",
+                        "Warning",
+                        MessageBoxButton.YesNo);
+
+                    if (result == MessageBoxResult.Yes)
+                    {
+                        SaveGroup();
+                    }
+                    else
+                    {
+                        return;
+                    }
+                }
+
                 if (value != _selectedGroup)
                 {
                     _selectedGroup = value;
@@ -75,7 +93,13 @@ namespace University.Domain.ViewModels
 
         private void NameChanged(object? obj)
         {
+            if (SelectedGroup == null!)
+            {
+                return;
+            }
+
             var control = obj as TextBox;
+
             if (control!.Text != SelectedGroup.Name)
             {
                 IsSaved = false;

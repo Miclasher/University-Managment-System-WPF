@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using University.DataLayer;
@@ -19,6 +20,23 @@ namespace University.Domain.ViewModels
             get => _selectedTeacher;
             set
             {
+                if (!IsSaved && _selectedTeacher != null!)
+                {
+                    var result = _messageBoxService.Show(
+                        "You have unsaved changes. Fo you want to save them and proceed?",
+                        "Warning",
+                        MessageBoxButton.YesNo);
+
+                    if (result == MessageBoxResult.Yes)
+                    {
+                        SaveTeacher();
+                    }
+                    else
+                    {
+                        return;
+                    }
+                }
+
                 if (_selectedTeacher != value)
                 {
                     _selectedTeacher = value;
@@ -49,7 +67,13 @@ namespace University.Domain.ViewModels
 
         private void LastNameChanged(object? obj)
         {
+            if (SelectedTeacher == null!)
+            {
+                return;
+            }
+
             var control = obj as TextBox;
+
             if (control!.Text != SelectedTeacher.LastName)
             {
                 IsSaved = false;
@@ -58,7 +82,13 @@ namespace University.Domain.ViewModels
 
         private void FirstNameChanged(object? obj)
         {
+            if (SelectedTeacher == null!)
+            {
+                return;
+            }
+
             var control = obj as TextBox;
+
             if (control!.Text != SelectedTeacher.FirstName)
             {
                 IsSaved = false;
