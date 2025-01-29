@@ -32,7 +32,7 @@ namespace University.Domain.ViewModels
             get => _selectedGroup;
             set
             {
-                if (!IsSaved && _selectedGroup != null!)
+                if (!IsSaved && _selectedGroup != null! && value != null!)
                 {
                     var result = _messageBoxService.Show(
                         "You have unsaved changes. Do you want to save and proceed?",
@@ -209,6 +209,8 @@ namespace University.Domain.ViewModels
             var result = _messageBoxService.Show("Are you sure you want to delete the selected group?", "Delete Group", System.Windows.MessageBoxButton.YesNo);
             if (result == System.Windows.MessageBoxResult.Yes)
             {
+                IsSaved = true;
+
                 if (SelectedGroup.Id == Guid.Empty)
                 {
                     Groups.Remove(SelectedGroup);
@@ -227,8 +229,6 @@ namespace University.Domain.ViewModels
                     _messageBoxService.Show("Group has students. Please clear the group first.", "Delete Group", System.Windows.MessageBoxButton.OK);
                 }
             }
-
-            IsSaved = true;
         }
 
         private void SaveGroup()

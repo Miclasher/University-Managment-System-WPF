@@ -21,7 +21,7 @@ namespace University.Domain.ViewModels
             get => _selectedStudent;
             set
             {
-                if (!IsSaved && _selectedStudent != null!)
+                if (!IsSaved && _selectedStudent != null! && value != null!)
                 {
                     var result = _messageBoxService.Show(
                         "You have unsaved changes. Fo you want to save them and proceed?",
@@ -71,7 +71,7 @@ namespace University.Domain.ViewModels
             Groups = new ObservableCollection<Group>(_context.Groups);
 
             AddStudentCommand = new RelayCommand(_ => AddStudent(), _ => true);
-            DeleteStudentCommand = new RelayCommand(_ => ConfirmAndDeleteStudent(), _ => true);
+            DeleteStudentCommand = new RelayCommand(_ => DeleteStudent(), _ => true);
             SaveStudentCommand = new RelayCommand(_ => SaveStudent(), _ => true);
             FirstNameChangedCommand = new RelayCommand(FirstNameChanged, _ => true);
             LastNameChangedCommand = new RelayCommand(LastNameChanged, _ => true);
@@ -145,7 +145,7 @@ namespace University.Domain.ViewModels
             IsSaved = true;
         }
 
-        private void ConfirmAndDeleteStudent()
+        private void DeleteStudent()
         {
             ArgumentNullException.ThrowIfNull(SelectedStudent);
 

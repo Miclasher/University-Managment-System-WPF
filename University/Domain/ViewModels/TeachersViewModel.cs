@@ -20,7 +20,7 @@ namespace University.Domain.ViewModels
             get => _selectedTeacher;
             set
             {
-                if (!IsSaved && _selectedTeacher != null!)
+                if (!IsSaved && _selectedTeacher != null! && value != null!)
                 {
                     var result = _messageBoxService.Show(
                         "You have unsaved changes. Fo you want to save them and proceed?",
