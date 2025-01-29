@@ -65,13 +65,18 @@ namespace University.Domain.ViewModels
             _context = context;
             _messageBoxService = messageBoxService;
 
-            Courses = new ObservableCollection<Course>(_context.Courses.Include(e => e.Groups).ToList());
+            Courses = new ObservableCollection<Course>(_context.Courses.Include(e => e.Groups));
 
             AddCourseCommand = new RelayCommand(_ => AddCourse(), _ => true);
             DeleteCourseCommand = new RelayCommand(_ => DeleteCourse(), _ => true);
             SaveCourseCommand = new RelayCommand(_ => SaveCourse(), _ => true);
             NameChangedCommand = new RelayCommand(NameChanged, _ => true);
             DescriptionChangedCommand = new RelayCommand(DescriptionChanged, _ => true);
+        }
+
+        public override void SaveChanges()
+        {
+            SaveCourse();
         }
 
         private void NameChanged(object? textBox)

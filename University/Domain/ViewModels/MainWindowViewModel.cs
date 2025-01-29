@@ -108,12 +108,16 @@ namespace University.Domain.ViewModels
             {
                 if (!viewModel.IsSaved)
                 {
-                    var result = MessageBox.Show("There are unsaved changes. Do you wish to navigate to another page without saving?", "Unsaved changes warning", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                    var result =
+                        MessageBox.Show("There are unsaved changes. Do you wish to save and proceed to other page?",
+                            "Unsaved changes warning", MessageBoxButton.YesNo, MessageBoxImage.Warning);
 
                     if (result == MessageBoxResult.No)
                     {
                         return false;
                     }
+
+                    viewModel.SaveChanges();
                 }
             }
 

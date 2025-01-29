@@ -67,8 +67,8 @@ namespace University.Domain.ViewModels
             _context = context;
             _messageBoxService = messageBoxService;
 
-            Students = new ObservableCollection<Student>(_context.Students.Include(e => e.Group).ToList());
-            Groups = new ObservableCollection<Group>(_context.Groups.ToList());
+            Students = new ObservableCollection<Student>(_context.Students.Include(e => e.Group));
+            Groups = new ObservableCollection<Group>(_context.Groups);
 
             AddStudentCommand = new RelayCommand(_ => AddStudent(), _ => true);
             DeleteStudentCommand = new RelayCommand(_ => ConfirmAndDeleteStudent(), _ => true);
@@ -76,6 +76,11 @@ namespace University.Domain.ViewModels
             FirstNameChangedCommand = new RelayCommand(FirstNameChanged, _ => true);
             LastNameChangedCommand = new RelayCommand(LastNameChanged, _ => true);
             GroupChangedCommand = new RelayCommand(_ => GroupChanged(), _ => true);
+        }
+
+        public override void SaveChanges()
+        {
+            SaveStudent();
         }
 
         private void GroupChanged()

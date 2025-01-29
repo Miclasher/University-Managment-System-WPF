@@ -1,4 +1,6 @@
-﻿namespace University.Domain.ViewModels
+﻿using Microsoft.EntityFrameworkCore.Diagnostics;
+
+namespace University.Domain.ViewModels
 {
     public abstract class BaseCrudViewModel : BaseViewModel
     {
@@ -15,5 +17,7 @@
                 }
             }
         }
+
+        public abstract void SaveChanges();
     }
 }

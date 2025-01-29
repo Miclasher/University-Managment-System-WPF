@@ -73,9 +73,9 @@ namespace University.Domain.ViewModels
             _context = context;
             _messageBoxService = messageBoxService;
 
-            Groups = new ObservableCollection<Group>(_context.Groups.Include(e => e.Teacher).OrderBy(g => g.Name).ToList());
-            Teachers = new ObservableCollection<Teacher>(_context.Teachers.OrderBy(e => e.FirstName).ToList());
-            Courses = new ObservableCollection<Course>(_context.Courses.OrderBy(e => e.Name).ToList());
+            Groups = new ObservableCollection<Group>(_context.Groups.Include(e => e.Teacher).OrderBy(g => g.Name));
+            Teachers = new ObservableCollection<Teacher>(_context.Teachers.OrderBy(e => e.FirstName));
+            Courses = new ObservableCollection<Course>(_context.Courses.OrderBy(e => e.Name));
 
             AddGroupCommand = new RelayCommand(_ => AddGroup(), _ => true);
             SaveGroupCommand = new RelayCommand(_ => SaveGroup(), _ => true);
@@ -87,6 +87,11 @@ namespace University.Domain.ViewModels
             NameChangedCommand = new RelayCommand(NameChanged, _ => true);
             TeacherChangedCommand = new RelayCommand(_ => TeacherChanged(), _ => true);
             CourseChangedCommand = new RelayCommand(_ => CourseChanged(), _ => true);
+        }
+
+        public override void SaveChanges()
+        {
+            SaveGroup();
         }
 
         private void CourseChanged()

@@ -64,13 +64,18 @@ namespace University.Domain.ViewModels
             _context = context;
             _messageBoxService = messageBoxService;
 
-            Teachers = new ObservableCollection<Teacher>(_context.Teachers.ToList());
+            Teachers = new ObservableCollection<Teacher>(_context.Teachers);
 
             AddTeacherCommand = new RelayCommand(_ => AddTeacher(), _ => true);
             DeleteTeacherCommand = new RelayCommand(_ => DeleteTeacher(), _ => true);
             SaveTeacherCommand = new RelayCommand(_ => SaveTeacher(), _ => true);
             FirstNameChangedCommand = new RelayCommand(FirstNameChanged, _ => true);
             LastNameChangedCommand = new RelayCommand(LastNameChanged, _ => true);
+        }
+
+        public override void SaveChanges()
+        {
+            SaveTeacher();
         }
 
         private void LastNameChanged(object? obj)
@@ -133,6 +138,11 @@ namespace University.Domain.ViewModels
         private void DeleteTeacher()
         {
             ArgumentNullException.ThrowIfNull(SelectedTeacher);
+
+            if (SelectedTeacher.Groups.Count != 0)
+            {
+                throw new InvalidOperationException("You cannot delete a teacher who is assigned to a group.");
+            }
 
             var result = _messageBoxService.Show("Are you sure you want to delete the selected teacher?", "Delete Teacher", System.Windows.MessageBoxButton.YesNo);
 
