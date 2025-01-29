@@ -48,8 +48,7 @@ namespace University.Domain.ViewModels
 
             Courses = new ObservableCollection<Course>(_context.Courses
                 .Include(c => c.Groups)
-                .ThenInclude(g => g.Students)
-                .ToList());
+                .ThenInclude(g => g.Students));
         }
     }
 }

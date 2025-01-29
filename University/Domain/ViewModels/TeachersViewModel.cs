@@ -141,7 +141,9 @@ namespace University.Domain.ViewModels
 
             if (SelectedTeacher.Groups.Count != 0)
             {
-                throw new InvalidOperationException("You cannot delete a teacher who is assigned to a group.");
+                throw new InvalidOperationException("You cannot delete a teacher who is assigned to a group.\n" +
+                                                    "Group(s) this teacher is assigned to: " +
+                                                    $"{string.Join(',', SelectedTeacher.Groups.Select(e => e.Name))}");
             }
 
             var result = _messageBoxService.Show("Are you sure you want to delete the selected teacher?", "Delete Teacher", System.Windows.MessageBoxButton.YesNo);
