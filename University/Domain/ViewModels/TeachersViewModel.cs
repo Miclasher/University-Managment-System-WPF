@@ -33,7 +33,7 @@ namespace University.Domain.ViewModels
                         {
                             SaveTeacher();
                         }
-                        catch(InvalidOperationException e)
+                        catch (InvalidOperationException e)
                         {
                             _messageBoxService.Show(e.Message, "Error", MessageBoxButton.OK);
                             return;
