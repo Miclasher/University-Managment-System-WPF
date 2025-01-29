@@ -47,7 +47,7 @@ namespace University.Domain.ViewModels
 
                 if (_selectedTeacher != value)
                 {
-                    _selectedTeacher = value;
+                    _selectedTeacher = value!;
                     OnPropertyChanged(nameof(SelectedTeacher));
                 }
             }
@@ -172,8 +172,15 @@ namespace University.Domain.ViewModels
                 FirstName = "New",
                 LastName = "Teacher",
             };
-            Teachers.Add(newTeacher);
+
             SelectedTeacher = newTeacher;
+
+            if (SelectedTeacher != newTeacher)
+            {
+                return;
+            }
+
+            Teachers.Add(newTeacher);
 
             IsSaved = false;
         }

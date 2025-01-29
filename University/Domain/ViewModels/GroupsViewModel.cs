@@ -59,7 +59,7 @@ namespace University.Domain.ViewModels
 
                 if (value != _selectedGroup)
                 {
-                    _selectedGroup = value;
+                    _selectedGroup = value!;
                     OnPropertyChanged(nameof(SelectedGroup));
                 }
             }
@@ -285,8 +285,15 @@ namespace University.Domain.ViewModels
                 Teacher = Teachers.First(),
                 Course = Courses.First()
             };
-            Groups.Add(newGroup);
+
             SelectedGroup = newGroup;
+
+            if (SelectedGroup != newGroup)
+            {
+                return;
+            }
+
+            Groups.Add(newGroup);
 
             IsSaved = false;
         }

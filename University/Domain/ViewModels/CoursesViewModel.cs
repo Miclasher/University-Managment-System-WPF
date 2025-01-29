@@ -48,7 +48,7 @@ namespace University.Domain.ViewModels
 
                 if (_selectedCourse != value)
                 {
-                    _selectedCourse = value;
+                    _selectedCourse = value!;
                     OnPropertyChanged(nameof(SelectedCourse));
                 }
             }
@@ -166,8 +166,16 @@ namespace University.Domain.ViewModels
                 Name = "New course",
                 Description = "Write description here",
             };
-            Courses.Add(newCourse);
+
             SelectedCourse = newCourse;
+
+            if (SelectedCourse != newCourse)
+            {
+                return;
+            }
+
+            Courses.Add(newCourse);
+
             IsSaved = false;
         }
     }

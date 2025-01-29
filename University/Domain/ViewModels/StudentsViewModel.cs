@@ -48,7 +48,7 @@ namespace University.Domain.ViewModels
 
                 if (_selectedStudent != value)
                 {
-                    _selectedStudent = value;
+                    _selectedStudent = value!;
                     OnPropertyChanged(nameof(SelectedStudent));
                 }
             }
@@ -181,8 +181,15 @@ namespace University.Domain.ViewModels
                 LastName = "Student",
                 Group = Groups.FirstOrDefault()!
             };
-            Students.Add(newStudent);
+
             SelectedStudent = newStudent;
+
+            if (SelectedStudent != newStudent)
+            {
+                return;
+            }
+
+            Students.Add(newStudent);
 
             IsSaved = false;
         }
