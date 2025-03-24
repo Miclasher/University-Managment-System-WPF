@@ -1,0 +1,85 @@
+﻿<Window x:Class="University.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:University.Domain.ViewModels"
+        mc:Ignorable="d"
+        Title="University Management System" 
+        Height="580" Width="800"
+        MinHeight="580" MinWidth="800">
+    <Window.Resources>
+        <Style x:Key="ButtonLikeRadioButton" TargetType="RadioButton">
+            <Setter Property="Background" Value="LightGray"/>
+            <Setter Property="BorderBrush" Value="DarkGray"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="10,5"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="RadioButton">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="3">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter Property="Background" Value="SlateGray"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="SlateGray"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <!-- Navigation Buttons -->
+        <UniformGrid Grid.Row="0" Grid.ColumnSpan="3" Rows="1" Columns="5" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            <RadioButton Content="Main page" Command="{Binding NavigateToMainCommand}" 
+                         HorizontalAlignment="Stretch" 
+                         VerticalAlignment="Stretch" 
+                         Margin="5" 
+                         Style="{StaticResource ButtonLikeRadioButton}"
+                         IsChecked="True"/>
+            <RadioButton Content="Courses List" Command="{Binding NavigateToCoursesListCommand}" 
+                         HorizontalAlignment="Stretch" 
+                         VerticalAlignment="Stretch" 
+                         Margin="5" 
+                         Style="{StaticResource ButtonLikeRadioButton}"/>
+            <RadioButton Content="Group List" Command="{Binding NavigateToGroupListCommand}" 
+                         HorizontalAlignment="Stretch" 
+                         VerticalAlignment="Stretch" 
+                         Margin="5" 
+                         Style="{StaticResource ButtonLikeRadioButton}"/>
+            <RadioButton Content="Teacher List" Command="{Binding NavigateToTeacherListCommand}" 
+                         HorizontalAlignment="Stretch" 
+                         VerticalAlignment="Stretch" 
+                         Margin="5" 
+                         Style="{StaticResource ButtonLikeRadioButton}"/>
+            <RadioButton Content="Student List" Command="{Binding NavigateToStudentListCommand}" 
+                         HorizontalAlignment="Stretch" 
+                         VerticalAlignment="Stretch" 
+                         Margin="5" 
+                         Style="{StaticResource ButtonLikeRadioButton}"/>
+
+        </UniformGrid>
+
+        <!-- Frame for Navigation -->
+        <Frame x:Name="MainFrame" Grid.Row="1" NavigationUIVisibility="Hidden"/>
+    </Grid>
+</Window>
